@@ -1,6 +1,8 @@
 package com.trilogyed.invoiceservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Proxy;
+
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import java.util.Objects;
 @Entity(name = "Invoice") //just in case we have some other "Invoice" entity in the future, this defines the name
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "invoice")
+@Proxy(lazy=false)
 public class Invoice {
 
     @Id
@@ -22,9 +25,8 @@ public class Invoice {
     @NotNull
     private LocalDate purchaseDate;
 
-    @NotNull
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //JPA2 thing: removes an invoice item AUTOMATICALLY when the invoice id it's associated with is deleted
-    @JoinColumn(name = "invoice_item_id")
+//    @JoinColumn(name = "invoice_item_id")
     private List<InvoiceItem> invoiceItems;
 
     public Integer getId() {
@@ -66,13 +68,13 @@ public class Invoice {
         Invoice invoice = (Invoice) o;
         return id.equals(invoice.id) &&
                 customerId.equals(invoice.customerId) &&
-                purchaseDate.equals(invoice.purchaseDate) &&
-                invoiceItems.equals(invoice.invoiceItems);
+                purchaseDate.equals(invoice.purchaseDate);
+//                invoiceItems.equals(invoice.invoiceItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customerId, purchaseDate, invoiceItems);
+        return Objects.hash(id, customerId, purchaseDate);
     }
 
     @Override
@@ -81,7 +83,7 @@ public class Invoice {
                 "id=" + id +
                 ", customerId=" + customerId +
                 ", purchaseDate=" + purchaseDate +
-                ", invoiceItems=" + invoiceItems +
+//                ", invoiceItems=" + invoiceItems +
                 '}';
     }
 }

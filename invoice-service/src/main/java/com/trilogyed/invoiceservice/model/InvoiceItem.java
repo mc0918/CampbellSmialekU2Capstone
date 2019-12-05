@@ -1,6 +1,7 @@
 package com.trilogyed.invoiceservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,12 +11,14 @@ import java.util.Objects;
 @Entity(name = "InvoiceItem")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "invoice_item")
+@Proxy(lazy=false)
 public class InvoiceItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer invoice_item_id;
 
+//    @ManyToOne(cascade = CascadeType.ALL)
     private Integer invoiceId;
 
     private Integer inventory_id;
@@ -25,12 +28,12 @@ public class InvoiceItem {
     @NotNull
     private BigDecimal unitPrice;
 
-    public Integer getId() {
-        return id;
+    public Integer getInvoice_item_id() {
+        return invoice_item_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setInvoice_item_id(Integer invoice_item_id) {
+        this.invoice_item_id = invoice_item_id;
     }
 
     public Integer getInvoiceId() {
@@ -70,7 +73,7 @@ public class InvoiceItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InvoiceItem that = (InvoiceItem) o;
-        return id.equals(that.id) &&
+        return invoice_item_id.equals(that.invoice_item_id) &&
                 invoiceId.equals(that.invoiceId) &&
                 inventory_id.equals(that.inventory_id) &&
                 quantity == that.quantity &&
@@ -79,13 +82,13 @@ public class InvoiceItem {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, invoiceId, inventory_id, quantity, unitPrice);
+        return Objects.hash(invoice_item_id, invoiceId, inventory_id, quantity, unitPrice);
     }
 
     @Override
     public String toString() {
         return "InvoiceItem{" +
-                "id=" + id +
+                "id=" + invoice_item_id +
                 ", invoiceId=" + invoiceId +
                 ", inventory_id=" + inventory_id +
                 ", quantity=" + quantity +

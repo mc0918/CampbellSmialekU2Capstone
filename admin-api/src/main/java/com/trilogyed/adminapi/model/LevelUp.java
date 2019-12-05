@@ -11,6 +11,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "level_up")
 public class LevelUp {
     /*
     !!!!!!!!!!!!!!!!!!!!!!!
@@ -108,6 +111,4 @@ public class LevelUp {
     public void setmember_date(LocalDate member_date) {
         this.member_date = member_date;
     }
-
-
 }

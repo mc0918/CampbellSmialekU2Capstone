@@ -28,6 +28,25 @@ public class InvoiceItem {
     @NotNull
     private BigDecimal unitPrice;
 
+    public InvoiceItem(){}
+
+    public InvoiceItem(Integer invoiceId, Integer inventory_id, int quantity, @NotNull BigDecimal unitPrice) {
+        this.invoiceId = invoiceId;
+        this.inventory_id = inventory_id;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
+    public InvoiceItem(Integer invoice_item_id, Integer invoiceId, Integer inventory_id, int quantity, @NotNull BigDecimal unitPrice) {
+        this.invoice_item_id = invoice_item_id;
+        this.invoiceId = invoiceId;
+        this.inventory_id = inventory_id;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
+
+
     public Integer getInvoice_item_id() {
         return invoice_item_id;
     }
@@ -73,11 +92,11 @@ public class InvoiceItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InvoiceItem that = (InvoiceItem) o;
-        return invoice_item_id.equals(that.invoice_item_id) &&
-                invoiceId.equals(that.invoiceId) &&
-                inventory_id.equals(that.inventory_id) &&
-                quantity == that.quantity &&
-                unitPrice.equals(that.unitPrice);
+        return quantity == that.quantity &&
+                Objects.equals(invoice_item_id, that.invoice_item_id) &&
+                Objects.equals(invoiceId, that.invoiceId) &&
+                Objects.equals(inventory_id, that.inventory_id) &&
+                Objects.equals(unitPrice, that.unitPrice);
     }
 
     @Override

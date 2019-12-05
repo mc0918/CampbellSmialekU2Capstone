@@ -21,38 +21,50 @@ public class InvoiceController {
 
     @PostMapping(value = "/invoices")
     @ResponseStatus(HttpStatus.CREATED)
-    public Invoice submitInvoice(@RequestBody @Valid InvoiceItemViewModel viewModel) {
-        return null;
+    public Invoice submitInvoice(@RequestBody @Valid Invoice invoice) {
+        return invoiceRepository.save(invoice);
     }
 
     @GetMapping(value = "/invoices/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Invoice getInvoiceById(@PathVariable int id) throws IdNotFoundException {
-        return null;
+        if (invoiceRepository.findById(id).isPresent()) {
+            return invoiceRepository.findById(id).get();
+        } else {
+            throw new IdNotFoundException("Cannot find invoice id " + id);
+        }
     }
 
     @GetMapping(value = "/invoices")
     @ResponseStatus(HttpStatus.OK)
     public List<Invoice> getAllInvoices() {
-        return null;
+        return invoiceRepository.findAll();
     }
 
     @GetMapping(value = "/invoices/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Invoice> getInvoicesByCustomerId(@PathVariable int id) {
-        return null;
+    public List<Invoice> getInvoicesByCustomerId(@PathVariable int id) throws IdNotFoundException {
+        try {
+            return invoiceRepository.findInvoicesByCustomerId(id);
+        } catch (IllegalArgumentException e){
+            throw new IdNotFoundException("Cannot find customer id " + id);
+        }
     }
 
     @PutMapping(value = "/invoices")
     @ResponseStatus(HttpStatus.OK)
-    public void updateInvoice(@RequestBody @Valid InvoiceItemViewModel viewModel) {
-        //nada
+    public void updateInvoice(@RequestBody @Valid Invoice invoice) {
+        invoiceRepository.save(invoice);
     }
 
     @DeleteMapping(value = "/invoice/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteInvoice(@PathVariable int id) {
-        //nada
+        if (invoiceRepository.findById(id).isPresent()) {
+            invoiceRepository.deleteById(id);
+        } else {
+            throw new IdNotFoundException("Cannot find invoice id " + id);
+        }
     }
 }
 

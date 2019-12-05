@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-//@RefreshScope
+@RefreshScope
 public class InvoiceController {
 
     @Autowired

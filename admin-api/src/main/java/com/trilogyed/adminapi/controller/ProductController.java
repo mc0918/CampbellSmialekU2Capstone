@@ -1,11 +1,11 @@
-package com.trilogyed.productservice.controller;
+package com.trilogyed.adminapi.controller;
 
-//import com.trilogyed.productservice.controller.ProductServiceLayer;
-//import com.trilogyed.productservice.controller.Product;
+//import com.trilogyed.adminapi.controller.ServiceLayer;
+//import com.trilogyed.adminapi.controller.Product;
 
-import com.trilogyed.productservice.exception.IdNotFound;
-import com.trilogyed.productservice.model.Product;
-import com.trilogyed.productservice.service.ProductServiceLayer;
+import com.trilogyed.adminapi.exception.IdNotFound;
+import com.trilogyed.adminapi.model.Product;
+import com.trilogyed.adminapi.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductServiceLayer service;
+    private ServiceLayer service;
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -46,7 +46,7 @@ public class ProductController {
         try {
             service.updateProduct(o);
             return "Update: Successful";
-        } catch (IdNotFound e) {
+        } catch (Exception e) {
             throw new IdNotFound("bad thing");
         }
     }

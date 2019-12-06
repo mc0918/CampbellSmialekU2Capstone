@@ -1,9 +1,9 @@
-package com.trilogyed.customerservice.controller;
+package com.trilogyed.adminapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trilogyed.customerservice.exception.IdNotFound;
-import com.trilogyed.customerservice.model.Customer;
-import com.trilogyed.customerservice.service.CustomerServiceLayer;
+import com.trilogyed.adminapi.exception.IdNotFound;
+import com.trilogyed.adminapi.model.Customer;
+import com.trilogyed.adminapi.service.ServiceLayer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,12 +33,12 @@ public class CustomerControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private CustomerServiceLayer service;
+    private ServiceLayer service;
 
     private static final Customer Customer_NO_ID = new Customer("first name", "last name", "street", "city", "zip", "email", "phone");
     private static final Customer Customer_ID = new Customer(1,"first name", "last name", "street", "city", "zip", "email", "phone");
     private static final List<Customer> Customer_LIST = new ArrayList<>(Arrays.asList(Customer_ID));
-    private static final Customer Customer_UPDATED = new Customer(1, "updated name", "last name", "street", "city", "zip", "email", "phone");
+    private static final Customer Customer_UPDATED = new Customer(1,"updated name", "last name", "street", "city", "zip", "email", "phone");
     private static final Customer Customer_BAD_UPDATE = new Customer(7,"first name", "last name", "street", "city", "zip", "email", "phone");
     private static final String SUCCESS = "Success";
     private static final String FAIL = "Fail";
@@ -51,6 +51,8 @@ public class CustomerControllerTest {
         when(service.getCustomer(1)).thenReturn(Customer_ID);
         when(service.getAllCustomers()).thenReturn(Customer_LIST);
 
+        doThrow(new IdNotFound("bad thing")).when(service).updateCustomer(Customer_BAD_UPDATE);
+
         //success and failure messages sent from service layer if applicable
         //when(service.updateCustomer(Customer_UPDATED)).thenReturn("Update: "+ SUCCESS);
         //when(service.deleteCustomer(1)).thenReturn("Delete: " + SUCCESS);
@@ -58,7 +60,6 @@ public class CustomerControllerTest {
         //when(service.deleteCustomer(1)).thenReturn("Delete: " + FAIL);
 
         //exceptions
-        doThrow(new IdNotFound("bad thing")).when(service).updateCustomer(Customer_BAD_UPDATE);
         //when(service.updateCustomer(Customer_BAD_UPDATE)).thenThrow(new IdNotFound("bad thing"));
         //when(service.deleteCustomer(7)).thenThrow(new IdNotFound("bad thing"));        
     }
@@ -122,9 +123,8 @@ public class CustomerControllerTest {
     }
 
     //exception test
-
     @Test
-    public void exceptionTest() throws Exception{ //is the service layer throwing the exception
+    public void exceptionTest() throws Exception {
         String input_json = mapper.writeValueAsString(Customer_BAD_UPDATE);
         mvc.perform(put("/customers")
                 .content(input_json)
@@ -134,5 +134,4 @@ public class CustomerControllerTest {
                 .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value
                 .andExpect(content().string(containsString("bad thing")));
     }
-
 }

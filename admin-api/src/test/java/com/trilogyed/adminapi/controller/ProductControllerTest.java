@@ -1,9 +1,9 @@
-package com.trilogyed.customerservice.controller;
+package com.trilogyed.adminapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trilogyed.customerservice.exception.IdNotFound;
-import com.trilogyed.customerservice.model.Customer;
-import com.trilogyed.customerservice.service.CustomerServiceLayer;
+import com.trilogyed.adminapi.exception.IdNotFound;
+import com.trilogyed.adminapi.model.Product;
+import com.trilogyed.adminapi.service.ServiceLayer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,19 +27,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(CustomerController.class)
-public class CustomerControllerTest {
+@WebMvcTest(ProductController.class)
+public class ProductControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private CustomerServiceLayer service;
+    private ServiceLayer service;
 
-    private static final Customer Customer_NO_ID = new Customer("first name", "last name", "street", "city", "zip", "email", "phone");
-    private static final Customer Customer_ID = new Customer(1,"first name", "last name", "street", "city", "zip", "email", "phone");
-    private static final List<Customer> Customer_LIST = new ArrayList<>(Arrays.asList(Customer_ID));
-    private static final Customer Customer_UPDATED = new Customer(1, "updated name", "last name", "street", "city", "zip", "email", "phone");
-    private static final Customer Customer_BAD_UPDATE = new Customer(7,"first name", "last name", "street", "city", "zip", "email", "phone");
+    private static final Product Product_NO_ID = new Product("name", "desc", 4.20, 3.50);
+    private static final Product Product_ID = new Product(1, "name", "desc", 4.20, 3.50);
+    private static final List<Product> Product_LIST = new ArrayList<>(Arrays.asList(Product_ID));
+    private static final Product Product_UPDATED = new Product(1, "name", "desc", 4.20, 3.50);
+    private static final Product Product_BAD_UPDATE = new Product(7, "name", "desc", 4.20, 3.50);
     private static final String SUCCESS = "Success";
     private static final String FAIL = "Fail";
 
@@ -47,28 +47,29 @@ public class CustomerControllerTest {
 
     @Before
     public void setUpMock() { //might need to be changed to fit with jpa methods
-        when(service.saveCustomer(Customer_NO_ID)).thenReturn(Customer_ID);
-        when(service.getCustomer(1)).thenReturn(Customer_ID);
-        when(service.getAllCustomers()).thenReturn(Customer_LIST);
+        when(service.saveProduct(Product_NO_ID)).thenReturn(Product_ID);
+        when(service.getProduct(1)).thenReturn(Product_ID);
+        when(service.getAllProducts()).thenReturn(Product_LIST);
+
+        doThrow(new IdNotFound("bad thing")).when(service).updateProduct(Product_BAD_UPDATE);
 
         //success and failure messages sent from service layer if applicable
-        //when(service.updateCustomer(Customer_UPDATED)).thenReturn("Update: "+ SUCCESS);
-        //when(service.deleteCustomer(1)).thenReturn("Delete: " + SUCCESS);
-        //when(service.updateCustomer(Customer_BAD_UPDATE)).thenReturn("Update: "+ FAIL);
-        //when(service.deleteCustomer(1)).thenReturn("Delete: " + FAIL);
+        //when(service.updateProduct(Product_UPDATED)).thenReturn("Update: "+ SUCCESS);
+        //when(service.deleteProduct(1)).thenReturn("Delete: " + SUCCESS);
+        //when(service.updateProduct(Product_BAD_UPDATE)).thenReturn("Update: "+ FAIL);
+        //when(service.deleteProduct(1)).thenReturn("Delete: " + FAIL);
 
         //exceptions
-        doThrow(new IdNotFound("bad thing")).when(service).updateCustomer(Customer_BAD_UPDATE);
-        //when(service.updateCustomer(Customer_BAD_UPDATE)).thenThrow(new IdNotFound("bad thing"));
-        //when(service.deleteCustomer(7)).thenThrow(new IdNotFound("bad thing"));        
+        //when(service.updateProduct(Product_BAD_UPDATE)).thenThrow(new IdNotFound("bad thing"));
+        //when(service.deleteProduct(7)).thenThrow(new IdNotFound("bad thing"));        
     }
 
     @Test
-    public void saveCustomer() throws Exception {
-        String input_json = mapper.writeValueAsString(Customer_NO_ID);
-        String output_json = mapper.writeValueAsString(Customer_ID);
+    public void saveProduct() throws Exception {
+        String input_json = mapper.writeValueAsString(Product_NO_ID);
+        String output_json = mapper.writeValueAsString(Product_ID);
 
-        mvc.perform(post("/customers")
+        mvc.perform(post("/products")
                 .content(input_json)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -78,30 +79,30 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void getCustomer() throws Exception {
-        String output_json = mapper.writeValueAsString(Customer_ID);
+    public void getProduct() throws Exception {
+        String output_json = mapper.writeValueAsString(Product_ID);
 
-        mvc.perform(get("/customers/{id}", 1))
+        mvc.perform(get("/products/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(output_json));
     }
 
     @Test
-    public void getAllCustomers() throws Exception {
-        String output_json = mapper.writeValueAsString(Customer_LIST);
+    public void getAllProducts() throws Exception {
+        String output_json = mapper.writeValueAsString(Product_LIST);
 
-        mvc.perform(get("/customers"))
+        mvc.perform(get("/products"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(output_json));
     }
 
     @Test
-    public void updateCustomer() throws Exception {
-        String input_json = mapper.writeValueAsString(Customer_UPDATED);
+    public void updateProduct() throws Exception {
+        String input_json = mapper.writeValueAsString(Product_UPDATED);
 
-        mvc.perform(put("/customers")
+        mvc.perform(put("/products")
                 .content(input_json)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -115,18 +116,17 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void deleteCustomer() throws Exception {
-        mvc.perform(delete("/customers/{id}", 1))
+    public void deleteProduct() throws Exception {
+        mvc.perform(delete("/products/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }
 
     //exception test
-
     @Test
-    public void exceptionTest() throws Exception{ //is the service layer throwing the exception
-        String input_json = mapper.writeValueAsString(Customer_BAD_UPDATE);
-        mvc.perform(put("/customers")
+    public void exceptionTest() throws Exception {
+        String input_json = mapper.writeValueAsString(Product_BAD_UPDATE);
+        mvc.perform(put("/products")
                 .content(input_json)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -134,5 +134,4 @@ public class CustomerControllerTest {
                 .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value
                 .andExpect(content().string(containsString("bad thing")));
     }
-
 }

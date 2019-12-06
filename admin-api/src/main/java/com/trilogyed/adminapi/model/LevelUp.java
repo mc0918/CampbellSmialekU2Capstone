@@ -11,9 +11,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Entity
+/*@Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "level_up")
+@Table(name = "level_up")*/
 public class LevelUp {
     /*
     !!!!!!!!!!!!!!!!!!!!!!!

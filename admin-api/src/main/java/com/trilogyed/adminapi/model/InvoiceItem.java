@@ -25,6 +25,24 @@ public class InvoiceItem {
     @NotNull
     private BigDecimal unitPrice;
 
+    public InvoiceItem() {
+    }
+
+    public InvoiceItem(Integer invoiceId, Integer inventory_id, int quantity, @NotNull BigDecimal unitPrice) {
+        this.invoiceId = invoiceId;
+        this.inventory_id = inventory_id;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
+    public InvoiceItem(Integer id, Integer invoiceId, Integer inventory_id, int quantity, @NotNull BigDecimal unitPrice) {
+        this.id = id;
+        this.invoiceId = invoiceId;
+        this.inventory_id = inventory_id;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -66,23 +84,6 @@ public class InvoiceItem {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InvoiceItem that = (InvoiceItem) o;
-        return id.equals(that.id) &&
-                invoiceId.equals(that.invoiceId) &&
-                inventory_id.equals(that.inventory_id) &&
-                quantity == that.quantity &&
-                unitPrice.equals(that.unitPrice);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, invoiceId, inventory_id, quantity, unitPrice);
-    }
-
-    @Override
     public String toString() {
         return "InvoiceItem{" +
                 "id=" + id +
@@ -91,5 +92,22 @@ public class InvoiceItem {
                 ", quantity=" + quantity +
                 ", unitPrice=" + unitPrice +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InvoiceItem that = (InvoiceItem) o;
+        return quantity == that.quantity &&
+                Objects.equals(id, that.id) &&
+                invoiceId.equals(that.invoiceId) &&
+                inventory_id.equals(that.inventory_id) &&
+                unitPrice.equals(that.unitPrice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, invoiceId, inventory_id, quantity, unitPrice);
     }
 }

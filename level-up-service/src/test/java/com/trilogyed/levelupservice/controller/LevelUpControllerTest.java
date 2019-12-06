@@ -1,7 +1,7 @@
 package com.trilogyed.levelupservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trilogyed.levelupservice.exceptions.IdNotFoundException;
+import com.trilogyed.levelupservice.exceptions.IdNotFound;
 import com.trilogyed.levelupservice.model.LevelUp;
 import com.trilogyed.levelupservice.repository.LevelUpRepository;
 import org.junit.Before;
@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -56,8 +55,8 @@ public class LevelUpControllerTest {
         when(levelUpRepository.findById(1)).thenReturn(Optional.of(LEVEL_UP_SAVED));
         when(levelUpRepository.findAll()).thenReturn(new ArrayList<>(Arrays.asList(LEVEL_UP_SAVED)));
         when(levelUpRepository.findAllByCustomerId(1)).thenReturn(new ArrayList<>(Arrays.asList(LEVEL_UP_SAVED)));
-        when(levelUpRepository.findById(BAD_ID)).thenThrow(new IdNotFoundException("Cannot find level up id " + BAD_ID));
-        when(levelUpRepository.findAllByCustomerId(BAD_ID)).thenThrow(new IdNotFoundException("Cannot find customer id " + BAD_ID));
+        when(levelUpRepository.findById(BAD_ID)).thenThrow(new IdNotFound("Cannot find level up id " + BAD_ID));
+        when(levelUpRepository.findAllByCustomerId(BAD_ID)).thenThrow(new IdNotFound("Cannot find customer id " + BAD_ID));
     }
 
     @Test

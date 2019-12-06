@@ -1,6 +1,13 @@
 package com.trilogyed.invoiceservice.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import org.hibernate.annotations.Proxy;
+
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
@@ -11,6 +18,7 @@ import java.util.Objects;
 @Entity(name = "Invoice") //just in case we have some other "Invoice" entity in the future, this defines the name
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "invoice")
+@Proxy(lazy=false)
 public class Invoice {
 
     @Id
@@ -20,12 +28,28 @@ public class Invoice {
     private Integer customerId;
 
     @NotNull
+    @JsonSerialize (using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate purchaseDate;
 
-    @NotNull
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //JPA2 thing: removes an invoice item AUTOMATICALLY when the invoice id it's associated with is deleted
-    @JoinColumn(name = "invoice_item_id")
     private List<InvoiceItem> invoiceItems;
+
+    public Invoice(){}
+
+    public Invoice(Integer customerId, @NotNull LocalDate purchaseDate, List<InvoiceItem> invoiceItems) {
+        this.customerId = customerId;
+        this.purchaseDate = purchaseDate;
+        this.invoiceItems = invoiceItems;
+    }
+
+    public Invoice(Integer id, Integer customerId, @NotNull LocalDate purchaseDate, List<InvoiceItem> invoiceItems) {
+        this.id = id;
+        this.customerId = customerId;
+        this.purchaseDate = purchaseDate;
+        this.invoiceItems = invoiceItems;
+    }
 
     public Integer getId() {
         return id;
@@ -64,10 +88,10 @@ public class Invoice {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Invoice invoice = (Invoice) o;
-        return id.equals(invoice.id) &&
-                customerId.equals(invoice.customerId) &&
-                purchaseDate.equals(invoice.purchaseDate) &&
-                invoiceItems.equals(invoice.invoiceItems);
+        return Objects.equals(id, invoice.id) &&
+                Objects.equals(customerId, invoice.customerId) &&
+                Objects.equals(purchaseDate, invoice.purchaseDate) &&
+                Objects.equals(invoiceItems, invoice.invoiceItems);
     }
 
     @Override
@@ -81,7 +105,7 @@ public class Invoice {
                 "id=" + id +
                 ", customerId=" + customerId +
                 ", purchaseDate=" + purchaseDate +
-                ", invoiceItems=" + invoiceItems +
+//                ", invoiceItems=" + invoiceItems +
                 '}';
     }
 }

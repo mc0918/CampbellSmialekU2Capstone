@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RefreshScope
-@ImportAutoConfiguration(RefreshAutoConfiguration.class)
 public class InvoiceController {
 
     @Autowired
@@ -74,7 +73,7 @@ public class InvoiceController {
     @ResponseStatus(HttpStatus.OK)
     public void updateInvoice(@RequestBody @Valid Invoice invoice) {
         List<InvoiceItem> items = new ArrayList<>(invoice.getInvoiceItems());
-        
+
         for (InvoiceItem item : items) {
             item.setInvoiceId(invoice.getId());
             itemRepository.save(item);

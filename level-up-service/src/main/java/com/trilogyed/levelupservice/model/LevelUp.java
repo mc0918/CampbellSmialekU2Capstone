@@ -23,6 +23,7 @@ public class LevelUp {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer levelUpId;
 
+    @NotNull
     private Integer customerId;
 
     private Integer points;
@@ -42,7 +43,7 @@ public class LevelUp {
     }
 
     public LevelUp(Integer levelUpId, Integer customerId, Integer points, @NotNull LocalDate memberDate) {
-        this.levelUpId = levelUpId
+        this.levelUpId = levelUpId;
         this.customerId = customerId;
         this.points = points;
         this.memberDate = memberDate;

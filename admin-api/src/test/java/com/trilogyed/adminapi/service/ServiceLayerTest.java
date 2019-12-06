@@ -84,7 +84,9 @@ public class ServiceLayerTest {
         doReturn(Customer_LIST).when(customerClient).getAllCustomers();
 
         //exceptions
-        doThrow(new IdNotFound("bad thing")).when(customerClient).getCustomer(DNE_ID); //change the custom exception message at the way way way down bottom of this
+        doThrow(new IdNotFound("bad thing")).when(customerClient).getCustomer(DNE_ID);
+        doThrow(new IdNotFound("bad thing")).when(customerClient).updateCustomer(Customer_BAD_UPDATE);
+        doThrow(new IdNotFound("bad thing")).when(customerClient).deleteCustomer(DNE_ID);
     }
 
     private void setUpInvoiceClientMock() {
@@ -95,18 +97,22 @@ public class ServiceLayerTest {
         doReturn(Invoice_LIST).when(invoiceClient).getAllInvoices();
 
         //exceptions
-        doThrow(new IdNotFound("bad thing")).when(invoiceClient).getInvoice(DNE_ID); //change the custom exception message at the way way way down bottom of this
+        doThrow(new IdNotFound("bad thing")).when(invoiceClient).getInvoice(DNE_ID);
+        doThrow(new IdNotFound("bad thing")).when(invoiceClient).updateInvoice(Invoice_BAD_UPDATE);
+        doThrow(new IdNotFound("bad thing")).when(invoiceClient).deleteInvoice(DNE_ID);
     }
 
     private void setUpInvoiceItemClientMock() {
-        invoiceClient = mock(InvoiceClient.class);
+        //invoiceClient = mock(InvoiceClient.class);
 
         doReturn(InvoiceItem_ID).when(invoiceClient).saveInvoiceItem(InvoiceItem_NO_ID);
         doReturn(InvoiceItem_ID).when(invoiceClient).getInvoiceItem(1);
         doReturn(InvoiceItem_LIST).when(invoiceClient).getAllInvoiceItems();
 
         //exceptions
-        doThrow(new IdNotFound("bad thing")).when(invoiceClient).getInvoiceItem(DNE_ID); //change the custom exception message at the way way way down bottom of this
+        doThrow(new IdNotFound("bad thing")).when(invoiceClient).getInvoiceItem(DNE_ID);
+        doThrow(new IdNotFound("bad thing")).when(invoiceClient).updateInvoiceItem(InvoiceItem_BAD_UPDATE);
+        doThrow(new IdNotFound("bad thing")).when(invoiceClient).deleteInvoiceItem(DNE_ID);
     }
 
     private void setUpLevelUpClientMock() {
@@ -117,8 +123,9 @@ public class ServiceLayerTest {
         doReturn(LevelUp_LIST).when(levelUpClient).getAllLevelUps();
 
         //exceptions
-        doThrow(new IdNotFound("bad thing")).when(levelUpClient).getLevelUp(DNE_ID); //change the custom exception message at the way way way down bottom of this
-    }
+        doThrow(new IdNotFound("bad thing")).when(levelUpClient).getLevelUp(DNE_ID);
+        doThrow(new IdNotFound("bad thing")).when(levelUpClient).updateLevelUp(LevelUp_BAD_UPDATE);
+        doThrow(new IdNotFound("bad thing")).when(levelUpClient).deleteLevelUp(DNE_ID);     }
 
     private void setUpProductClientMock() {
         productClient = mock(ProductClient.class);
@@ -128,8 +135,9 @@ public class ServiceLayerTest {
         doReturn(Product_LIST).when(productClient).getAllProducts();
 
         //exceptions
-        doThrow(new IdNotFound("bad thing")).when(productClient).getProduct(DNE_ID); //change the custom exception message at the way way way down bottom of this
-    }
+        doThrow(new IdNotFound("bad thing")).when(productClient).getProduct(DNE_ID);
+        doThrow(new IdNotFound("bad thing")).when(productClient).updateProduct(Product_BAD_UPDATE);
+        doThrow(new IdNotFound("bad thing")).when(productClient).deleteProduct(DNE_ID);     }
 
     @Test
     public void saveCustomer() {
@@ -287,6 +295,41 @@ public class ServiceLayerTest {
     @Test(expected = IdNotFound.class)
     public void throwsIdNotFoundProductDelete() {
         service.deleteProduct(DNE_ID); //or some other method to test that we anticipate throws an exception
+
+        fail("bad thing"); //or whatever the expected exception message is
+    }
+
+    @Test(expected = IdNotFound.class)
+    public void throwsIdNotFoundCustomerGet() {
+        service.getCustomer(DNE_ID); //or some other method to test that we anticipate throws an exception
+
+        fail("bad thing"); //or whatever the expected exception message is
+    }
+
+    @Test(expected = IdNotFound.class)
+    public void throwsIdNotFoundInvoiceGet() {
+        service.getInvoice(DNE_ID); //or some other method to test that we anticipate throws an exception
+
+        fail("bad thing"); //or whatever the expected exception message is
+    }
+
+    @Test(expected = IdNotFound.class)
+    public void throwsIdNotFoundInvoiceItemGet() {
+        service.getInvoiceItem(DNE_ID); //or some other method to test that we anticipate throws an exception
+
+        fail("bad thing"); //or whatever the expected exception message is
+    }
+
+    @Test(expected = IdNotFound.class)
+    public void throwsIdNotFoundLevelUpGet() {
+        service.getLevelUp(DNE_ID); //or some other method to test that we anticipate throws an exception
+
+        fail("bad thing"); //or whatever the expected exception message is
+    }
+
+    @Test(expected = IdNotFound.class)
+    public void throwsIdNotFoundProductGet() {
+        service.getProduct(DNE_ID); //or some other method to test that we anticipate throws an exception
 
         fail("bad thing"); //or whatever the expected exception message is
     }

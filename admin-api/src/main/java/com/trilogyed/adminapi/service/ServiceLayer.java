@@ -36,8 +36,12 @@ public class ServiceLayer {
         return customerClient.saveCustomer(o);
     }
 
-    public Customer getCustomer(int id) {
-        return customerClient.getCustomer(id);
+    public Customer getCustomer(int id) throws IdNotFound {
+        try{
+            return customerClient.getCustomer(id);
+        } catch(IdNotFound n){
+            throw new IdNotFound("bad thing");
+        }
     }
 
     public List<Customer> getAllCustomers() {
@@ -66,8 +70,12 @@ public class ServiceLayer {
         return invoiceClient.saveInvoice(o);
     }
 
-    public Invoice getInvoice(int id) {
-        return invoiceClient.getInvoice(id);
+    public Invoice getInvoice(int id) throws IdNotFound {
+        try{
+            return invoiceClient.getInvoice(id);
+        } catch(IdNotFound i){
+            throw new IdNotFound("bad thing");
+        }
     }
 
     public List<Invoice> getAllInvoices() {
@@ -97,7 +105,11 @@ public class ServiceLayer {
     }
 
     public InvoiceItem getInvoiceItem(int id) {
-        return invoiceClient.getInvoiceItem(id);
+        try{
+            return invoiceClient.getInvoiceItem(id);
+        } catch(IdNotFound i){
+            throw new IdNotFound("bad thing");
+        }
     }
 
     public List<InvoiceItem> getAllInvoiceItems() {
@@ -126,8 +138,12 @@ public class ServiceLayer {
         return levelUpClient.saveLevelUp(o);
     }
 
-    public LevelUp getLevelUp(int id) {
-        return levelUpClient.getLevelUp(id);
+    public LevelUp getLevelUp(int id) throws IdNotFound {
+        try{
+            return levelUpClient.getLevelUp(id);
+        } catch(IdNotFound i){
+            throw new IdNotFound("bad thing");
+        }
     }
 
     public List<LevelUp> getAllLevelUps() {
@@ -156,8 +172,12 @@ public class ServiceLayer {
         return productClient.saveProduct(o);
     }
 
-    public Product getProduct(int id) {
-        return productClient.getProduct(id);
+    public Product getProduct(int id) throws IdNotFound {
+        try{
+            return productClient.getProduct(id);
+        } catch(IdNotFound i){
+            throw new IdNotFound("bad thing");
+        }
     }
 
     public List<Product> getAllProducts() {

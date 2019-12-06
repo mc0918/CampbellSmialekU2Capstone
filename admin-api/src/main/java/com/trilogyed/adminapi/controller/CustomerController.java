@@ -25,11 +25,11 @@ public class CustomerController {
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Customer getCustomer(@PathVariable int id) throws IllegalArgumentException {
+    public Customer getCustomer(@PathVariable int id) throws IdNotFound {
         try {
             return service.getCustomer(id);
-        } catch (NullPointerException n) {
-            throw new IllegalArgumentException("illegal argument or another exception idk");
+        } catch (IdNotFound n) {
+            throw new IdNotFound("bad thing");
         }
     }
 
@@ -52,12 +52,12 @@ public class CustomerController {
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deleteCustomer(@PathVariable int id) {
+    public String deleteCustomer(@PathVariable int id) throws IdNotFound {
         try {
             service.deleteCustomer(id);
             return "Delete: Success";
-        } catch (Exception e) {
-            return "Delete: Fail";
+        } catch (IdNotFound e) {
+            throw new IdNotFound("bad thing");
         }
     }
 }

@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 public class LevelUpController {
-/*
     @Autowired
     private ServiceLayer service;
 
@@ -26,11 +25,11 @@ public class LevelUpController {
 
     @RequestMapping(value = "/levelUp/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public LevelUp getLevelUp(@PathVariable int id) throws IllegalArgumentException {
+    public LevelUp getLevelUp(@PathVariable int id) throws IdNotFound {
         try {
             return service.getLevelUp(id);
-        } catch (NullPointerException n) {
-            throw new IllegalArgumentException("illegal argument or another exception idk");
+        } catch (IdNotFound n) {
+            throw new IdNotFound("bad thing");
         }
     }
 
@@ -46,19 +45,19 @@ public class LevelUpController {
         try {
             service.updateLevelUp(o);
             return "Update: Successful";
-        } catch (Exception e) {
+        } catch (IdNotFound e) {
             throw new IdNotFound("bad thing");
         }
     }
 
     @RequestMapping(value = "/levelUp/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deleteLevelUp(@PathVariable int id) {
+    public String deleteLevelUp(@PathVariable int id) throws IdNotFound {
         try {
             service.deleteLevelUp(id);
             return "Delete: Success";
-        } catch (Exception e) {
-            return "Delete: Fail";
+        } catch (IdNotFound e) {
+            throw new IdNotFound("bad thing");
         }
-    }*/
+    }
 }

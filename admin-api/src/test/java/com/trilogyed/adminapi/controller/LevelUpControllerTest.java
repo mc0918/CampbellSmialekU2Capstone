@@ -54,6 +54,8 @@ public class LevelUpControllerTest {
         when(service.getAllLevelUps()).thenReturn(LevelUp_LIST);
 
         doThrow(new IdNotFound("bad thing")).when(service).updateLevelUp(LevelUp_BAD_UPDATE);
+        doThrow(new IdNotFound("bad thing")).when(service).deleteLevelUp(7);
+        doThrow(new IdNotFound("bad thing")).when(service).getLevelUp(7);
 
         //success and failure messages sent from service layer if applicable
         //when(service.updateLevelUp(LevelUp_UPDATED)).thenReturn("Update: "+ SUCCESS);
@@ -126,11 +128,29 @@ public class LevelUpControllerTest {
 
     //exception test
     @Test
-    public void exceptionTest() throws Exception {
+    public void exceptionUpdate() throws Exception {
         String input_json = mapper.writeValueAsString(LevelUp_BAD_UPDATE);
         mvc.perform(put("/levelUp")
                 .content(input_json)
                 .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value
+                .andExpect(content().string(containsString("bad thing")));
+    }
+
+    @Test
+    public void exceptionDelete() throws Exception {
+        mvc.perform(delete("/levelUp/{id}", 7)
+        )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value
+                .andExpect(content().string(containsString("bad thing")));
+    }
+
+    @Test
+    public void exceptionGet() throws Exception {
+        mvc.perform(get("/levelUp/{id}", 7)
         )
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value

@@ -62,6 +62,7 @@ public class InvoiceControllerTest {
         //exceptions
         doThrow(new IdNotFound("bad thing")).when(service).updateInvoice(Invoice_BAD_UPDATE);
         doThrow(new IdNotFound("bad thing")).when(service).deleteInvoice(7);
+        doThrow(new IdNotFound("bad thing")).when(service).getInvoice(7);
     }
 
     @Test
@@ -124,11 +125,29 @@ public class InvoiceControllerTest {
 
     //exception test
     @Test
-    public void exceptionTest() throws Exception {
+    public void exceptionUpdate() throws Exception {
         String input_json = mapper.writeValueAsString(Invoice_BAD_UPDATE);
         mvc.perform(put("/invoices")
                 .content(input_json)
                 .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value
+                .andExpect(content().string(containsString("bad thing")));
+    }
+
+    @Test
+    public void exceptionDelete() throws Exception {
+        mvc.perform(delete("/invoices/{id}", 7)
+        )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value
+                .andExpect(content().string(containsString("bad thing")));
+    }
+
+    @Test
+    public void exceptionGet() throws Exception {
+        mvc.perform(get("/invoices/{id}", 7)
         )
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value

@@ -50,11 +50,12 @@ public class InvoiceControllerTest {
 
     private static final LocalDate DATE_OBJECT = LocalDate.now();
     //    private static String DATE = format.format(DATE_OBJECT);
-    private static final Invoice INVOICE_1_TO_SAVE = new Invoice(1, DATE_OBJECT, new ArrayList<InvoiceItem>());
-    private static final Invoice INVOICE_1_SAVED = new Invoice(1, 1, DATE_OBJECT, new ArrayList<InvoiceItem>());
 
-    private static final InvoiceItem INVOICE_ITEM_1_TO_SAVE = new InvoiceItem(1, 1, 10, new BigDecimal("20.99"));
+    private static final InvoiceItem INVOICE_ITEM_1_TO_SAVE = new InvoiceItem(1,1, 10, new BigDecimal("20.99"));
     private static final InvoiceItem INVOICE_ITEM_1_SAVED = new InvoiceItem(1, 1, 1, 10, new BigDecimal("20.99"));
+
+    private static final Invoice INVOICE_1_TO_SAVE = new Invoice(1, DATE_OBJECT, new ArrayList<InvoiceItem>());
+    private static final Invoice INVOICE_1_SAVED = new Invoice(1, 1, DATE_OBJECT, new ArrayList<InvoiceItem>(Arrays.asList(INVOICE_ITEM_1_SAVED)));
 
     private static final Integer BAD_ID = 55;
 

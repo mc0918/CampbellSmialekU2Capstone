@@ -7,15 +7,20 @@ import com.trilogyed.invoiceservice.model.InvoiceItem;
 import com.trilogyed.invoiceservice.repository.InvoiceItemRepository;
 import com.trilogyed.invoiceservice.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RefreshScope
+@ImportAutoConfiguration(RefreshAutoConfiguration.class)
 public class InvoiceController {
 
     @Autowired
@@ -26,7 +31,17 @@ public class InvoiceController {
     @PostMapping(value = "/invoices")
     @ResponseStatus(HttpStatus.CREATED)
     public Invoice submitInvoice(@RequestBody @Valid Invoice invoice) {
-        return invoiceRepository.save(invoice);
+        List<InvoiceItem> items = new ArrayList<InvoiceItem>(invoice.getInvoiceItems());
+        invoice.setInvoiceItems(new ArrayList<>());
+
+        invoice = invoiceRepository.save(invoice);
+
+        for (InvoiceItem item : items) {
+            item.setInvoiceId(invoice.getId());
+            itemRepository.save(item);
+        }
+        invoice.setInvoiceItems(itemRepository.findAllByInvoiceId(invoice.getId()));
+        return invoice;
     }
 
     @GetMapping(value = "/invoices/{id}")
@@ -58,6 +73,13 @@ public class InvoiceController {
     @PutMapping(value = "/invoices")
     @ResponseStatus(HttpStatus.OK)
     public void updateInvoice(@RequestBody @Valid Invoice invoice) {
+        List<InvoiceItem> items = new ArrayList<>(invoice.getInvoiceItems());
+        
+        for (InvoiceItem item : items) {
+            item.setInvoiceId(invoice.getId());
+            itemRepository.save(item);
+        }
+        invoice.setInvoiceItems(itemRepository.findAllByInvoiceId(invoice.getId()));
         invoiceRepository.save(invoice);
     }
 

@@ -8,23 +8,44 @@ public class Product {
     private String product_description;
     private double list_price;
     private double unit_cost;
+    private int inventory;
 
     public Product() {
     }
 
-    public Product( String product_name, String product_description, double list_price, double unit_cost) {
+    public Product( String product_name, String product_description, double list_price, double unit_cost, int inventory) {
         this.product_name = product_name;
         this.product_description = product_description;
         this.list_price = list_price;
         this.unit_cost = unit_cost;
+        this.inventory = inventory;
     }
 
-    public Product(Integer product_id, String product_name, String product_description, double list_price, double unit_cost) {
+    public Product(Integer product_id, String product_name, String product_description, double list_price, double unit_cost, int inventory) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.product_description = product_description;
         this.list_price = list_price;
         this.unit_cost = unit_cost;
+        this.inventory = inventory;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Double.compare(product.list_price, list_price) == 0 &&
+                Double.compare(product.unit_cost, unit_cost) == 0 &&
+                inventory == product.inventory &&
+                Objects.equals(product_id, product.product_id) &&
+                Objects.equals(product_name, product.product_name) &&
+                Objects.equals(product_description, product.product_description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product_id, product_name, product_description, list_price, unit_cost, inventory);
     }
 
     @Override
@@ -35,24 +56,8 @@ public class Product {
                 ", product_description='" + product_description + '\'' +
                 ", list_price=" + list_price +
                 ", unit_cost=" + unit_cost +
+                ", inventory=" + inventory +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return Double.compare(product.list_price, list_price) == 0 &&
-                Double.compare(product.unit_cost, unit_cost) == 0 &&
-                Objects.equals(product_id, product.product_id) &&
-                product_name.equals(product.product_name) &&
-                product_description.equals(product.product_description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(product_id, product_name, product_description, list_price, unit_cost);
     }
 
     public Integer getproduct_id() {

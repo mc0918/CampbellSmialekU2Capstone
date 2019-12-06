@@ -26,11 +26,11 @@ public class ProductController {
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Product getProduct(@PathVariable int id) throws IllegalArgumentException {
+    public Product getProduct(@PathVariable int id) throws IdNotFound {
         try {
             return service.getProduct(id);
         } catch (NullPointerException n) {
-            throw new IllegalArgumentException("illegal argument or another exception idk");
+            throw new IdNotFound("illegal argument or another exception idk");
         }
     }
 
@@ -46,19 +46,19 @@ public class ProductController {
         try {
             service.updateProduct(o);
             return "Update: Successful";
-        } catch (Exception e) {
+        } catch (IdNotFound e) {
             throw new IdNotFound("bad thing");
         }
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deleteProduct(@PathVariable int id) {
+    public String deleteProduct(@PathVariable int id) throws IdNotFound {
         try {
             service.deleteProduct(id);
             return "Delete: Success";
-        } catch (Exception e) {
-            return "Delete: Fail";
+        } catch (IdNotFound e) {
+            throw new IdNotFound("bad thing");
         }
     }
 }

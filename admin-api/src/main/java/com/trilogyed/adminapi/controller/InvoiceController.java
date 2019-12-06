@@ -26,18 +26,18 @@ public class InvoiceController {
 
     @RequestMapping(value = "/invoices/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Invoice getInvoice(@PathVariable int id) throws IllegalArgumentException {
+    public Invoice getInvoice(@PathVariable int id) throws IdNotFound {
         try {
             return service.getInvoice(id);
-        } catch (NullPointerException n) {
-            throw new IllegalArgumentException("illegal argument or another exception idk");
+        } catch (IdNotFound n) {
+            throw new IdNotFound("bad thing");
         }
     }
 
     @RequestMapping(value = "/invoices", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<Invoice> getAllInvoices() {
-        return service.getAllInvoices();
+            return service.getAllInvoices();
     }
 
     @RequestMapping(value = "/invoices", method = RequestMethod.PUT)
@@ -46,19 +46,19 @@ public class InvoiceController {
         try {
             service.updateInvoice(o);
             return "Update: Successful";
-        } catch (Exception e) {
+        } catch (IdNotFound e) {
             throw new IdNotFound("bad thing");
         }
     }
 
     @RequestMapping(value = "/invoices/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deleteInvoice(@PathVariable int id) {
+    public String deleteInvoice(@PathVariable int id) throws IdNotFound {
         try {
             service.deleteInvoice(id);
             return "Delete: Success";
-        } catch (Exception e) {
-            return "Delete: Fail";
+        } catch (IdNotFound e) {
+            throw new IdNotFound("bad thing");
         }
     }
 }

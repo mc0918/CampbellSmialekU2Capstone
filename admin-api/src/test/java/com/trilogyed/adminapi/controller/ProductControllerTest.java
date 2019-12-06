@@ -52,7 +52,8 @@ public class ProductControllerTest {
         when(service.getAllProducts()).thenReturn(Product_LIST);
 
         doThrow(new IdNotFound("bad thing")).when(service).updateProduct(Product_BAD_UPDATE);
-
+        doThrow(new IdNotFound("bad thing")).when(service).deleteProduct(7);
+        doThrow(new IdNotFound("bad thing")).when(service).getProduct(7);
         //success and failure messages sent from service layer if applicable
         //when(service.updateProduct(Product_UPDATED)).thenReturn("Update: "+ SUCCESS);
         //when(service.deleteProduct(1)).thenReturn("Delete: " + SUCCESS);
@@ -124,11 +125,29 @@ public class ProductControllerTest {
 
     //exception test
     @Test
-    public void exceptionTest() throws Exception {
+    public void exceptionUpdate() throws Exception {
         String input_json = mapper.writeValueAsString(Product_BAD_UPDATE);
         mvc.perform(put("/products")
                 .content(input_json)
                 .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value
+                .andExpect(content().string(containsString("bad thing")));
+    }
+
+    @Test
+    public void exceptionDelete() throws Exception {
+        mvc.perform(delete("/products/{id}", 7)
+        )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value
+                .andExpect(content().string(containsString("bad thing")));
+    }
+
+    @Test
+    public void exceptionGet() throws Exception {
+        mvc.perform(get("/products/{id}", 7)
         )
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity()) //or whatever status code you set your exception to be, this is a default value

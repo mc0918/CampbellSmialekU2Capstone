@@ -65,7 +65,7 @@ public class ProductControllerTest {
         String input_json = mapper.writeValueAsString(Product_NO_ID);
         String output_json = mapper.writeValueAsString(Product_ID);
 
-        mvc.perform(post("/product")
+        mvc.perform(post("/products")
                 .content(input_json)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -78,7 +78,7 @@ public class ProductControllerTest {
     public void getProduct() throws Exception {
         String output_json = mapper.writeValueAsString(Product_ID);
 
-        mvc.perform(get("/product/{id}", 1))
+        mvc.perform(get("/products/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(output_json));
@@ -88,7 +88,7 @@ public class ProductControllerTest {
     public void getAllProducts() throws Exception {
         String output_json = mapper.writeValueAsString(Product_LIST);
 
-        mvc.perform(get("/product"))
+        mvc.perform(get("/products"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(output_json));
@@ -98,7 +98,7 @@ public class ProductControllerTest {
     public void updateProduct() throws Exception {
         String input_json = mapper.writeValueAsString(Product_UPDATED);
 
-        mvc.perform(put("/product")
+        mvc.perform(put("/products")
                 .content(input_json)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -113,7 +113,7 @@ public class ProductControllerTest {
 
     @Test
     public void deleteProduct() throws Exception {
-        mvc.perform(delete("/product/{id}", 1))
+        mvc.perform(delete("/products/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }

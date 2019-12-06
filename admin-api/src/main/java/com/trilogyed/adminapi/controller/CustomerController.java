@@ -1,11 +1,11 @@
-package com.trilogyed.customerservice.controller;
+package com.trilogyed.adminapi.controller;
 
-//import com.trilogyed.customerservice.controller.CustomerServiceLayer;
-//import com.trilogyed.customerservice.controller.Customer;
+//import com.trilogyed.adminapi.controller.ServiceLayer;
+//import com.trilogyed.adminapi.controller.Customer;
 
-import com.trilogyed.customerservice.exception.IdNotFound;
-import com.trilogyed.customerservice.model.Customer;
-import com.trilogyed.customerservice.service.CustomerServiceLayer;
+import com.trilogyed.adminapi.exception.IdNotFound;
+import com.trilogyed.adminapi.model.Customer;
+import com.trilogyed.adminapi.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ import java.util.List;
 public class CustomerController {
 
     @Autowired
-    private CustomerServiceLayer service;
+    private ServiceLayer service;
 
     @RequestMapping(value = "/customers", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -48,7 +48,6 @@ public class CustomerController {
             return "Update: Successful";
         } catch (IdNotFound e) {
             throw new IdNotFound("bad thing");
-            //return "Update: Fail";
         }
     }
 

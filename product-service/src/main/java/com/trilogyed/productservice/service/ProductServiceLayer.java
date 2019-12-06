@@ -58,4 +58,14 @@ public class ProductServiceLayer {
             throw new IdNotFound("bad thing");
         }
     }
+
+    public void updateInventory(int id, int inventory) throws IdNotFound {
+        try{
+            Product p = repository.getOne(id);
+            p.setInventory(inventory);
+            repository.save(p);
+        } catch(NullPointerException n){
+            throw new IdNotFound("bad thing");
+        }
+    }
 }

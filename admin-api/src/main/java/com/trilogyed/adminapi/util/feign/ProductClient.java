@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @FeignClient(name = "product-service")
@@ -23,5 +24,8 @@ public interface ProductClient {
     public String updateProduct(@RequestBody Product o) throws IdNotFound;
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
-    public String deleteProduct(@PathVariable int id);
+    public String deleteProduct(@PathVariable int id) throws IdNotFound;
+
+    @RequestMapping(value = "/products/inventory", method = RequestMethod.PUT)
+    public String updateInventory(@RequestParam(required = true) int id, @RequestParam(required = true) int inventory) throws IdNotFound;
 }

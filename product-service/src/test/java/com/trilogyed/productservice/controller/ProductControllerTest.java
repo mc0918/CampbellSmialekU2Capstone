@@ -33,11 +33,11 @@ public class ProductControllerTest {
     @MockBean
     private ProductServiceLayer Product;
 
-    private static final Product Product_NO_ID = new Product( "name", "description", 4.20, 3.50);
-    private static final Product Product_ID = new Product(1, "name", "description", 4.20, 3.50);
+    private static final Product Product_NO_ID = new Product( "name", "description", 4.20, 3.50,1);
+    private static final Product Product_ID = new Product(1, "name", "description", 4.20, 3.50,1);
     private static final List<Product> Product_LIST = new ArrayList<>(Arrays.asList(Product_ID));
-    private static final Product Product_UPDATED = new Product(1, "updated", "description", 4.20, 3.50);
-    private static final Product Product_BAD_UPDATE = new Product(7, "name", "description", 4.20, 3.50);
+    private static final Product Product_UPDATED = new Product(1, "updated", "description", 4.20, 3.50,1);
+    private static final Product Product_BAD_UPDATE = new Product(7, "name", "description", 4.20, 3.50,1);
     private static final String SUCCESS = "Success";
     private static final String FAIL = "Fail";
 

@@ -1,5 +1,5 @@
 create schema if not exists spring_security_test;
-use spring_security_test;
+use spring_security;
 
 create table if not exists users(
 	username varchar(50) not null primary key,
@@ -69,4 +69,20 @@ create table if not exists customer (
     email varchar(75) not null,
     phone varchar(20) not null
 );
+
+insert into users(username, password, enabled) values("EMPLOYEE", "$2a$10$FBLAFp8HSO7klMqZV/K1XOwxHOTkfcBnKWAwL0aq0tMTGvpjRV2zW", true);
+insert into users(username, password, enabled) values("TEAM_LEAD", "$2a$10$FBLAFp8HSO7klMqZV/K1XOwxHOTkfcBnKWAwL0aq0tMTGvpjRV2zW", true);
+insert into users(username, password, enabled) values("MANAGER", "$2a$10$FBLAFp8HSO7klMqZV/K1XOwxHOTkfcBnKWAwL0aq0tMTGvpjRV2zW", true);
+insert into users(username, password, enabled) values("ADMIN", "$2a$10$FBLAFp8HSO7klMqZV/K1XOwxHOTkfcBnKWAwL0aq0tMTGvpjRV2zW", true);
+
+insert into authorities(username, authority) values ("EMPLOYEE", "EMPLOYEE");
+insert into authorities(username, authority) values ("TEAM_LEAD", "EMPLOYEE");
+insert into authorities(username, authority) values ("TEAM_LEAD", "TEAM_LEAD");
+insert into authorities(username, authority) values ("MANAGER", "EMPLOYEE");
+insert into authorities(username, authority) values ("MANAGER", "TEAM_LEAD");
+insert into authorities(username, authority) values ("MANAGER", "MANAGER");
+insert into authorities(username, authority) values ("ADMIN", "EMPLOYEE");
+insert into authorities(username, authority) values ("ADMIN", "TEAM_LEAD");
+insert into authorities(username, authority) values ("ADMIN", "MANAGER");
+insert into authorities(username, authority) values ("ADMIN", "ADMIN");
 

@@ -61,4 +61,15 @@ public class ProductController {
             return "Delete: Fail";
         }
     }
+
+    @RequestMapping(value = "/products/inventory", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public String updateInventory(@RequestParam(required = true) int id, @RequestParam int inventory) throws IdNotFound {
+        try {
+            service.updateInventory(id, inventory);
+            return "Update: Successful";
+        } catch (IdNotFound e) {
+            throw new IdNotFound("bad thing");
+        }
+    }
 }

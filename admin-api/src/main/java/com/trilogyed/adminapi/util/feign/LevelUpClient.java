@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@FeignClient(name = "levelUp-service")
+@FeignClient(name = "levelUp-service")
 public interface LevelUpClient {
     @RequestMapping(value = "/levelUp", method = RequestMethod.POST)
     public LevelUp saveLevelUp(@RequestBody LevelUp o);

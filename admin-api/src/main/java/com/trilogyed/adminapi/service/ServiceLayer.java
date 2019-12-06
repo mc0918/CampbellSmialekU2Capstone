@@ -201,4 +201,13 @@ public class ServiceLayer {
             throw new IdNotFound("bad thing");
         }
     }
+
+    public void updateInventory(int id, int inventory) throws IdNotFound {
+        try{
+            productClient.getProduct(id);
+            productClient.updateInventory(id, inventory);
+        } catch(IdNotFound i ){
+            throw new IdNotFound("bad thing");
+        }
+    }
 }

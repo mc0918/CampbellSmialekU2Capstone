@@ -29,25 +29,28 @@ public class Product {
     private String product_description;
     private double list_price;
     private double unit_cost;
+    private int inventory;
     //@OneToMany(mappedBy = note_id, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     //private Set<Note> notes;
 
     public Product() {
     }
 
-    public Product( String product_name, String product_description, double list_price, double unit_cost) {
+    public Product(String product_name, String product_description, double list_price, double unit_cost, int inventory) {
         this.product_name = product_name;
         this.product_description = product_description;
         this.list_price = list_price;
         this.unit_cost = unit_cost;
+        this.inventory = inventory;
     }
 
-    public Product(Integer product_id, String product_name, String product_description, double list_price, double unit_cost) {
+    public Product(Integer product_id, String product_name, String product_description, double list_price, double unit_cost, int inventory) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.product_description = product_description;
         this.list_price = list_price;
         this.unit_cost = unit_cost;
+        this.inventory = inventory;
     }
 
     @Override
@@ -58,6 +61,7 @@ public class Product {
                 ", product_description='" + product_description + '\'' +
                 ", list_price=" + list_price +
                 ", unit_cost=" + unit_cost +
+                ", inventory=" + inventory +
                 '}';
     }
 
@@ -68,6 +72,7 @@ public class Product {
         Product product = (Product) o;
         return Double.compare(product.list_price, list_price) == 0 &&
                 Double.compare(product.unit_cost, unit_cost) == 0 &&
+                inventory == product.inventory &&
                 Objects.equals(product_id, product.product_id) &&
                 product_name.equals(product.product_name) &&
                 product_description.equals(product.product_description);
@@ -75,7 +80,7 @@ public class Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(product_id, product_name, product_description, list_price, unit_cost);
+        return Objects.hash(product_id, product_name, product_description, list_price, unit_cost, inventory);
     }
 
     public Integer getproduct_id() {
@@ -118,5 +123,11 @@ public class Product {
         this.unit_cost = unit_cost;
     }
 
+    public int getInventory() {
+        return inventory;
+    }
 
+    public void setInventory(int inventory) {
+        this.inventory = inventory;
+    }
 }

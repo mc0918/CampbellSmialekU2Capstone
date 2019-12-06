@@ -37,11 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.httpBasic();
 
         httpSecurity.authorizeRequests()
-                .mvcMatchers("").hasAuthority("REGISTERED_USER")
-                .mvcMatchers("").hasAuthority("REGISTERED_USER")
-                .mvcMatchers("").hasAuthority("PUBLISHER")
-                .mvcMatchers("").hasAuthority("RSVP_ADMIN")
-                .mvcMatchers(HttpMethod.DELETE, "/FREKIN END POINTS, MAN/*").hasAuthority("FREKIN AUTHORITIES, MAN")
+                .mvcMatchers(HttpMethod.GET, new String[] {"/customers", "/invoices","/invoiceItems","/levelUp","/products"}).hasAuthority("EMPLOYEE")
+                .mvcMatchers(HttpMethod.PUT, "/products/inventory").hasAuthority("EMPLOYEE")
+                .mvcMatchers(HttpMethod.PUT, new String[] {"/customers", "/invoices","/invoiceItems","/levelUp","/products"}).hasAuthority("TEAM_LEAD")
+                .mvcMatchers(HttpMethod.POST, "/customers").hasAuthority("TEAM_LEAD")
+                .mvcMatchers(HttpMethod.POST, new String[] {"/customers", "/invoices","/invoiceItems","/levelUp","/products"}).hasAuthority("MANAGER")
+                .mvcMatchers(HttpMethod.PUT, new String[] {"/customers", "/invoices","/invoiceItems","/levelUp","/products"}).hasAuthority("MANAGER")
+                .mvcMatchers(HttpMethod.GET, new String[] {"/customers", "/invoices","/invoiceItems","/levelUp","/products"}).hasAuthority("MANAGER")
+                .mvcMatchers(HttpMethod.DELETE, new String[] {"/customers", "/invoices","/invoiceItems","/levelUp","/products"}).hasAuthority("ADMIN")
                 .anyRequest().permitAll();
 
         httpSecurity

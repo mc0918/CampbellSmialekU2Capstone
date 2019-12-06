@@ -61,4 +61,18 @@ public class ProductController {
             throw new IdNotFound("bad thing");
         }
     }
+
+    @RequestMapping(value = "/products/inventory", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public String updateInventory(@RequestParam(required = true) int id, @RequestParam(required = true) int inventory) throws IdNotFound {
+        if(inventory < 0){
+            return "please enter a valid amount of 0 or greater";
+        }
+        try {
+            service.updateInventory(id, inventory);
+            return "Update: Successful";
+        } catch (IdNotFound e) {
+            throw new IdNotFound("bad thing");
+        }
+    }
 }

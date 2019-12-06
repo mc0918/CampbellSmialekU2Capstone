@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PasswordUtility {
-    public List<String> createPassword(String ... passwords) {
+    public static List<String> createPassword(String ... passwords) {
         PasswordEncoder enc = new BCryptPasswordEncoder();
         List<String> passList = new ArrayList<>();
         Arrays.stream(passwords).forEach(p->
@@ -21,7 +21,7 @@ public class PasswordUtility {
         return passList;
     }
 
-/*    public static void main(String[] args) {
-        List<String> passwords = createPassword("p1", "p2", "p3");
-    }*/
+    public static void main(String[] args) {
+        List<String> passwords = createPassword("password");
+    }
 }

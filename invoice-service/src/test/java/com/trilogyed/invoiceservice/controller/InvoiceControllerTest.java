@@ -1,8 +1,7 @@
 package com.trilogyed.invoiceservice.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trilogyed.invoiceservice.exceptions.IdNotFoundException;
+import com.trilogyed.invoiceservice.exceptions.IdNotFound;
 import com.trilogyed.invoiceservice.model.Invoice;
 import com.trilogyed.invoiceservice.model.InvoiceItem;
 import com.trilogyed.invoiceservice.repository.InvoiceItemRepository;
@@ -20,8 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,15 +65,15 @@ public class InvoiceControllerTest {
         when(invoiceRepository.findById(1)).thenReturn(java.util.Optional.of(INVOICE_1_SAVED));
         when(invoiceRepository.findAll()).thenReturn(new ArrayList<>(Arrays.asList(INVOICE_1_SAVED)));
         when(invoiceRepository.findInvoicesByCustomerId(1)).thenReturn(new ArrayList<>(Arrays.asList(INVOICE_1_SAVED)));
-        when(invoiceRepository.findById(BAD_ID)).thenThrow(new IdNotFoundException("Cannot find invoice id " + BAD_ID));
-        when(invoiceRepository.findInvoicesByCustomerId(BAD_ID)).thenThrow(new IdNotFoundException("Cannot find customer id " + BAD_ID));
+        when(invoiceRepository.findById(BAD_ID)).thenThrow(new IdNotFound("Cannot find invoice id " + BAD_ID));
+        when(invoiceRepository.findInvoicesByCustomerId(BAD_ID)).thenThrow(new IdNotFound("Cannot find customer id " + BAD_ID));
 
         when(itemRepository.save(INVOICE_ITEM_1_TO_SAVE)).thenReturn(INVOICE_ITEM_1_SAVED);
         when(itemRepository.findById(1)).thenReturn(java.util.Optional.of(INVOICE_ITEM_1_SAVED));
         when(itemRepository.findAll()).thenReturn(new ArrayList<>(Arrays.asList(INVOICE_ITEM_1_SAVED)));
         when(itemRepository.findAllByInvoiceId(1)).thenReturn(new ArrayList<>(Arrays.asList(INVOICE_ITEM_1_SAVED)));
-        when(itemRepository.findById(BAD_ID)).thenThrow(new IdNotFoundException("Cannot find invoice item id " + BAD_ID));
-        when(itemRepository.findAllByInvoiceId(BAD_ID)).thenThrow(new IdNotFoundException("Cannot find invoice id " + BAD_ID));
+        when(itemRepository.findById(BAD_ID)).thenThrow(new IdNotFound("Cannot find invoice item id " + BAD_ID));
+        when(itemRepository.findAllByInvoiceId(BAD_ID)).thenThrow(new IdNotFound("Cannot find invoice id " + BAD_ID));
 
     }
 

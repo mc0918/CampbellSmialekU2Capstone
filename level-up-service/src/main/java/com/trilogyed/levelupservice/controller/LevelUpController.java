@@ -1,6 +1,6 @@
 package com.trilogyed.levelupservice.controller;
 
-import com.trilogyed.levelupservice.exceptions.IdNotFoundException;
+import com.trilogyed.levelupservice.exceptions.IdNotFound;
 import com.trilogyed.levelupservice.model.LevelUp;
 import com.trilogyed.levelupservice.repository.LevelUpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,11 @@ public class LevelUpController {
 
     @GetMapping(value = "/levelUp/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public LevelUp findLevelUpById(@PathVariable int id) throws IdNotFoundException {
+    public LevelUp findLevelUpById(@PathVariable int id) throws IdNotFound {
         if (levelUpRepository.findById(id).isPresent()) {
             return levelUpRepository.findById(id).get();
         } else {
-            throw new IdNotFoundException("Cannot find level up id " + id);
+            throw new IdNotFound("Cannot find level up id " + id);
         }
     }
 
@@ -42,11 +42,11 @@ public class LevelUpController {
 
     @GetMapping(value = "/levelUp/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<LevelUp> findLevelUpsByCustomerId(@PathVariable int id) throws IdNotFoundException {
+    public List<LevelUp> findLevelUpsByCustomerId(@PathVariable int id) throws IdNotFound {
         try {
             return levelUpRepository.findAllByCustomerId(id);
         } catch (IllegalArgumentException e) {
-            throw new IdNotFoundException("Cannot find customer id " + id);
+            throw new IdNotFound("Cannot find customer id " + id);
         }
     }
 
@@ -62,7 +62,7 @@ public class LevelUpController {
         if (levelUpRepository.findById(id).isPresent()) {
             levelUpRepository.deleteById(id);
         } else {
-            throw new IdNotFoundException("Cannot find level up id " + id);
+            throw new IdNotFound("Cannot find level up id " + id);
         }
     }
 }

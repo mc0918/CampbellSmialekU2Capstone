@@ -1,21 +1,17 @@
 package com.trilogyed.invoiceservice.controller;
 
-import com.netflix.discovery.converters.Auto;
-import com.trilogyed.invoiceservice.exceptions.IdNotFoundException;
+import com.trilogyed.invoiceservice.exceptions.IdNotFound;
 import com.trilogyed.invoiceservice.model.Invoice;
 import com.trilogyed.invoiceservice.model.InvoiceItem;
 import com.trilogyed.invoiceservice.repository.InvoiceItemRepository;
 import com.trilogyed.invoiceservice.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -45,11 +41,11 @@ public class InvoiceController {
 
     @GetMapping(value = "/invoices/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Invoice getInvoiceById(@PathVariable int id) throws IdNotFoundException {
+    public Invoice getInvoiceById(@PathVariable int id) throws IdNotFound {
         if (invoiceRepository.findById(id).isPresent()) {
             return invoiceRepository.findById(id).get();
         } else {
-            throw new IdNotFoundException("Cannot find invoice id " + id);
+            throw new IdNotFound("Cannot find invoice id " + id);
         }
     }
 
@@ -61,11 +57,11 @@ public class InvoiceController {
 
     @GetMapping(value = "/invoices/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Invoice> getInvoicesByCustomerId(@PathVariable int id) throws IdNotFoundException {
+    public List<Invoice> getInvoicesByCustomerId(@PathVariable int id) throws IdNotFound {
         try {
             return invoiceRepository.findInvoicesByCustomerId(id);
         } catch (IllegalArgumentException e) {
-            throw new IdNotFoundException("Cannot find customer id " + id);
+            throw new IdNotFound("Cannot find customer id " + id);
         }
     }
 
@@ -88,7 +84,7 @@ public class InvoiceController {
         if (invoiceRepository.findById(id).isPresent()) {
             invoiceRepository.deleteById(id);
         } else {
-            throw new IdNotFoundException("Cannot find invoice id " + id);
+            throw new IdNotFound("Cannot find invoice id " + id);
         }
     }
 
@@ -101,11 +97,11 @@ public class InvoiceController {
 
     @GetMapping(value = "/invoiceItems/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public InvoiceItem getInvoiceItemById(@PathVariable int id) throws IdNotFoundException {
+    public InvoiceItem getInvoiceItemById(@PathVariable int id) throws IdNotFound {
         if (itemRepository.findById(id).isPresent()) {
             return itemRepository.findById(id).get();
         } else {
-            throw new IdNotFoundException("Cannot find invoice id " + id);
+            throw new IdNotFound("Cannot find invoice id " + id);
         }
     }
 
@@ -117,11 +113,11 @@ public class InvoiceController {
 
     @GetMapping(value = "/invoiceItems/invoice/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<InvoiceItem> getInvoiceItemsByInvoiceId(@PathVariable int id) throws IdNotFoundException {
+    public List<InvoiceItem> getInvoiceItemsByInvoiceId(@PathVariable int id) throws IdNotFound {
         try {
             return itemRepository.findAllByInvoiceId(id);
         } catch (IllegalArgumentException e) {
-            throw new IdNotFoundException("Cannot find invoice id " + id);
+            throw new IdNotFound("Cannot find invoice id " + id);
         }
     }
 
@@ -137,7 +133,7 @@ public class InvoiceController {
         if (itemRepository.findById(id).isPresent()) {
             itemRepository.deleteById(id);
         } else {
-            throw new IdNotFoundException("Cannot find invoice item id " + id);
+            throw new IdNotFound("Cannot find invoice item id " + id);
         }
     }
 }

@@ -20,7 +20,8 @@ public class Invoice {
     private Integer customerId;
     @JsonFormat(pattern="dd-MM-yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)    @NotNull
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @NotNull
     private LocalDate purchaseDate;
     @NotNull
     private List<InvoiceItem> invoiceItems;

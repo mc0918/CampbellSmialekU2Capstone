@@ -60,7 +60,6 @@ public class ServiceLayerTest {
     private ServiceLayer service;
     private CustomerClient customerClient;
     private InvoiceClient invoiceClient;
-    private InvoiceItemClient invoiceItemClient;
     private LevelUpClient levelUpClient;
     private ProductClient productClient;
 
@@ -73,7 +72,7 @@ public class ServiceLayerTest {
         setUpLevelUpClientMock();
         setUpProductClientMock();
 
-        service = new ServiceLayer(customerClient, invoiceClient, invoiceItemClient, levelUpClient, productClient);
+        service = new ServiceLayer(customerClient, invoiceClient, levelUpClient, productClient);
     }
 
     //feign client tests
@@ -100,14 +99,14 @@ public class ServiceLayerTest {
     }
 
     private void setUpInvoiceItemClientMock() {
-        invoiceItemClient = mock(InvoiceItemClient.class);
+        invoiceClient = mock(InvoiceClient.class);
 
-        doReturn(InvoiceItem_ID).when(invoiceItemClient).saveInvoiceItem(InvoiceItem_NO_ID);
-        doReturn(InvoiceItem_ID).when(invoiceItemClient).getInvoiceItem(1);
-        doReturn(InvoiceItem_LIST).when(invoiceItemClient).getAllInvoiceItems();
+        doReturn(InvoiceItem_ID).when(invoiceClient).saveInvoiceItem(InvoiceItem_NO_ID);
+        doReturn(InvoiceItem_ID).when(invoiceClient).getInvoiceItem(1);
+        doReturn(InvoiceItem_LIST).when(invoiceClient).getAllInvoiceItems();
 
         //exceptions
-        doThrow(new IdNotFound("bad thing")).when(invoiceItemClient).getInvoiceItem(DNE_ID); //change the custom exception message at the way way way down bottom of this
+        doThrow(new IdNotFound("bad thing")).when(invoiceClient).getInvoiceItem(DNE_ID); //change the custom exception message at the way way way down bottom of this
     }
 
     private void setUpLevelUpClientMock() {

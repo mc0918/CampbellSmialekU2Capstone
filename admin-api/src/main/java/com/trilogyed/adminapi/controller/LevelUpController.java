@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 public class LevelUpController {
-
+/*
     @Autowired
     private ServiceLayer service;
 
@@ -60,5 +60,5 @@ public class LevelUpController {
         } catch (Exception e) {
             return "Delete: Fail";
         }
-    }
+    }*/
 }

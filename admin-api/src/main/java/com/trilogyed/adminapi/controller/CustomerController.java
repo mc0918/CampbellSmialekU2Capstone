@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 public class CustomerController {
-
     @Autowired
     private ServiceLayer service;
 

@@ -3,6 +3,7 @@ package com.trilogyed.adminapi.util.feign;
 import com.trilogyed.adminapi.exception.IdNotFound;
 import com.trilogyed.adminapi.model.Customer;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

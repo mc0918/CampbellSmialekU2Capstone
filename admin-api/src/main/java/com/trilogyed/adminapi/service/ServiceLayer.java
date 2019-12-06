@@ -7,6 +7,7 @@ import com.trilogyed.adminapi.exception.IdNotFound;
 import com.trilogyed.adminapi.model.*;
 import com.trilogyed.adminapi.util.feign.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,19 +17,17 @@ public class ServiceLayer {
     /*
     YOU MIGHT NEED TO CHANGE THINGS (LIKE METHOD NAMES) TO MATCH WITH JPA
     in which case the methods should be:
-        save(o), getOne(id), finadAll(), save(o) bc update is save again, deleteById(id)
+        save(o), getOne(id), findAll(), save(o) bc update is save again, deleteById(id)
     */
     private CustomerClient customerClient;
     private InvoiceClient invoiceClient;
-    private InvoiceItemClient invoiceItemClient;
     private LevelUpClient levelUpClient;
     private ProductClient productClient;
 
     @Autowired
-    public ServiceLayer(CustomerClient client, InvoiceClient invoiceClient, InvoiceItemClient invoiceItemClient, LevelUpClient levelUpClient, ProductClient productClient) {
-        this.customerClient = client;
+    public ServiceLayer(CustomerClient customerClient, InvoiceClient invoiceClient, LevelUpClient levelUpClient, ProductClient productClient) {
+        this.customerClient = customerClient;
         this.invoiceClient = invoiceClient;
-        this.invoiceItemClient = invoiceItemClient;
         this.levelUpClient = levelUpClient;
         this.productClient = productClient;
     }
@@ -94,32 +93,34 @@ public class ServiceLayer {
     }
 
     public InvoiceItem saveInvoiceItem(InvoiceItem o) {
-        return invoiceItemClient.saveInvoiceItem(o);
+        return invoiceClient.saveInvoiceItem(o);
     }
 
     public InvoiceItem getInvoiceItem(int id) {
-        return invoiceItemClient.getInvoiceItem(id);
+        return invoiceClient.getInvoiceItem(id);
     }
 
     public List<InvoiceItem> getAllInvoiceItems() {
-        return invoiceItemClient.getAllInvoiceItems();
+        return invoiceClient.getAllInvoiceItems();
     }
 
     public void updateInvoiceItem(InvoiceItem o) throws IdNotFound {
         try{
-            invoiceItemClient.getInvoiceItem(o.getId());
-            invoiceItemClient.updateInvoiceItem(o);
+            invoiceClient.getInvoiceItem(o.getId());
+            invoiceClient.updateInvoiceItem(o);
         } catch(IdNotFound i){
             throw new IdNotFound("bad thing");
-        }    }
+        }
+    }
 
     public void deleteInvoiceItem(int id) throws IdNotFound {
         try{
-            invoiceItemClient.getInvoiceItem(id);
-            invoiceItemClient.deleteInvoiceItem(id);
+            invoiceClient.getInvoiceItem(id);
+            invoiceClient.deleteInvoiceItem(id);
         } catch(IdNotFound i){
             throw new IdNotFound("bad thing");
-        }    }
+        }
+    }
 
     public LevelUp saveLevelUp(LevelUp o) {
         return levelUpClient.saveLevelUp(o);

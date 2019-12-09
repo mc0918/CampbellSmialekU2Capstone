@@ -7,23 +7,30 @@ import com.trilogyed.productservice.exception.IdNotFound;
 import com.trilogyed.productservice.model.Product;
 import com.trilogyed.productservice.service.ProductServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CacheConfig(cacheNames = {"products"})
 public class ProductController {
 
     @Autowired
     private ProductServiceLayer service;
 
+    @CachePut(key = "#result.getproduct_id()")
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Product saveProduct(@RequestBody Product o) {
         return service.saveProduct(o);
     }
 
+    @Cacheable
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Product getProduct(@PathVariable int id) throws IllegalArgumentException {
@@ -40,6 +47,8 @@ public class ProductController {
         return service.getAllProducts();
     }
 
+    @CacheEvict(key = "#o.product_id()")
+    //@CacheEvict(value = "products", key = "#product_id")
     @RequestMapping(value = "/products", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public String updateProduct(@RequestBody Product o) throws IdNotFound {
@@ -51,14 +60,16 @@ public class ProductController {
         }
     }
 
+    @CacheEvict
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deleteProduct(@PathVariable int id) {
+    public String deleteProduct(@PathVariable int id) throws IdNotFound {
         try {
             service.deleteProduct(id);
             return "Delete: Success";
-        } catch (Exception e) {
-            return "Delete: Fail";
+        } catch (IdNotFound e) {
+            throw new IdNotFound("bad thing");
+            //return "Delete: Fail";
         }
     }
 

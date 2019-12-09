@@ -47,6 +47,8 @@ in which case the methods should be:
         doReturn(Customer_ID).when(repository).getOne(1);
         doReturn(Customer_LIST).when(repository).findAll();
         doThrow(new IdNotFound("bad thing")).when(repository).save(Customer_BAD_UPDATE);
+        doThrow(new IdNotFound("bad thing")).when(repository).getOne(DNE_ID);
+        doThrow(new IdNotFound("bad thing")).when(repository).deleteById(DNE_ID);
     }
 
     @Test
@@ -85,8 +87,22 @@ in which case the methods should be:
 
     //test for custom exception
     @Test(expected = IdNotFound.class)
-    public void throwsIdNotFound() {
+    public void throwsIdNotFoundUpdate() {
         Customer actual = service.saveCustomer(Customer_BAD_UPDATE); //or some other method to test that we anticipate throws an exception
+
+        fail("bad thing"); //or whatever the expected exception message is
+    }
+
+    @Test(expected = IdNotFound.class)
+    public void throwsIdNotFoundGet() {
+        Customer actual = service.getCustomer(DNE_ID); //or some other method to test that we anticipate throws an exception
+
+        fail("bad thing"); //or whatever the expected exception message is
+    }
+
+    @Test(expected = IdNotFound.class)
+    public void throwsIdNotFoundDelete() {
+        service.deleteCustomer(DNE_ID); //or some other method to test that we anticipate throws an exception
 
         fail("bad thing"); //or whatever the expected exception message is
     }

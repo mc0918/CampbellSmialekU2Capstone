@@ -30,8 +30,12 @@ public class CustomerServiceLayer {
         return repository.save(o);
     }
 
-    public Customer getCustomer(int id) {
-        return repository.getOne(id);
+    public Customer getCustomer(int id) throws IdNotFound {
+        try{
+            return repository.getOne(id);
+        } catch(NullPointerException n){
+            throw new IdNotFound("bad thing");
+        }
     }
 
     public List<Customer> getAllCustomers() {
@@ -47,7 +51,12 @@ public class CustomerServiceLayer {
         }
     }
 
-    public void deleteCustomer(int id) {
-        repository.deleteById(id);
+    public void deleteCustomer(int id) throws IdNotFound {
+        try{
+            repository.getOne(id);
+            repository.deleteById(id);
+        } catch(NullPointerException n){
+            throw new IdNotFound("bad thing");
+        }
     }
 }

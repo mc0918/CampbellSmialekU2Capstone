@@ -150,5 +150,5 @@ public class LevelUpControllerTest {
 
     @Test
     public void shouldThrowIdAlreadyExistsForSameCustomerId() throws Exception {}
-    
+
 }

@@ -34,12 +34,13 @@ public class RetailViewModel {
     private LocalDate memberDate;
 
 //    Product Stuff
-    private Integer product_id;
-    private String product_name;
-    private String product_description;
-    private double list_price;
-    private double unit_cost;
-    private int inventory;
+//    private Integer product_id;
+//    private String product_name;
+//    private String product_description;
+//    private double list_price;
+//    private double unit_cost;
+//    private int inventory;
+    private List<Product> products;
 
     public RetailViewModel(){}
 
@@ -171,52 +172,61 @@ public class RetailViewModel {
         this.memberDate = memberDate;
     }
 
-    public Integer getProduct_id() {
-        return product_id;
+//    public Integer getProduct_id() {
+//        return product_id;
+//    }
+//
+//    public void setProduct_id(Integer product_id) {
+//        this.product_id = product_id;
+//    }
+//
+//    public String getProduct_name() {
+//        return product_name;
+//    }
+//
+//    public void setProduct_name(String product_name) {
+//        this.product_name = product_name;
+//    }
+//
+//    public String getProduct_description() {
+//        return product_description;
+//    }
+//
+//    public void setProduct_description(String product_description) {
+//        this.product_description = product_description;
+//    }
+//
+//    public double getList_price() {
+//        return list_price;
+//    }
+//
+//    public void setList_price(double list_price) {
+//        this.list_price = list_price;
+//    }
+//
+//    public double getUnit_cost() {
+//        return unit_cost;
+//    }
+//
+//    public void setUnit_cost(double unit_cost) {
+//        this.unit_cost = unit_cost;
+//    }
+//
+//    public int getInventory() {
+//        return inventory;
+//    }
+//
+//    public void setInventory(int inventory) {
+//        this.inventory = inventory;
+//    }
+
+
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
-    }
-
-    public String getProduct_name() {
-        return product_name;
-    }
-
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
-    }
-
-    public String getProduct_description() {
-        return product_description;
-    }
-
-    public void setProduct_description(String product_description) {
-        this.product_description = product_description;
-    }
-
-    public double getList_price() {
-        return list_price;
-    }
-
-    public void setList_price(double list_price) {
-        this.list_price = list_price;
-    }
-
-    public double getUnit_cost() {
-        return unit_cost;
-    }
-
-    public void setUnit_cost(double unit_cost) {
-        this.unit_cost = unit_cost;
-    }
-
-    public int getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(int inventory) {
-        this.inventory = inventory;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override
@@ -225,9 +235,9 @@ public class RetailViewModel {
         if (o == null || getClass() != o.getClass()) return false;
         RetailViewModel that = (RetailViewModel) o;
         return quantity == that.quantity &&
-                Double.compare(that.list_price, list_price) == 0 &&
-                Double.compare(that.unit_cost, unit_cost) == 0 &&
-                inventory == that.inventory &&
+//                Double.compare(that.list_price, list_price) == 0 &&
+//                Double.compare(that.unit_cost, unit_cost) == 0 &&
+//                inventory == that.inventory &&
                 Objects.equals(customer_id, that.customer_id) &&
                 Objects.equals(first_name, that.first_name) &&
                 Objects.equals(last_name, that.last_name) &&
@@ -242,15 +252,17 @@ public class RetailViewModel {
                 Objects.equals(invoiceItems, that.invoiceItems) &&
                 Objects.equals(levelUpId, that.levelUpId) &&
                 Objects.equals(points, that.points) &&
-                Objects.equals(memberDate, that.memberDate) &&
-                Objects.equals(product_id, that.product_id) &&
-                Objects.equals(product_name, that.product_name) &&
-                Objects.equals(product_description, that.product_description);
+                Objects.equals(memberDate, that.memberDate);
+//                Objects.equals(product_id, that.product_id) &&
+//                Objects.equals(product_name, that.product_name) &&
+//                Objects.equals(product_description, that.product_description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customer_id, first_name, last_name, street, city, zip, email, phone, id, customerId, purchaseDate, invoiceItems, quantity, levelUpId, points, memberDate, product_id, product_name, product_description, list_price, unit_cost, inventory);
+        return Objects.hash(customer_id, first_name, last_name, street, city, zip, email, phone, id, customerId, purchaseDate, invoiceItems, quantity, levelUpId, points, memberDate
+//                ,product_id, product_name, product_description, list_price, unit_cost, inventory
+        );
     }
 
 

@@ -21,7 +21,7 @@ public class InvoiceItem {
 //    @ManyToOne(cascade = CascadeType.ALL)
     private Integer invoiceId;
 
-    private Integer inventory_id;
+    private Integer inventory_id; //INVENTORY ID IS PRODUCT ID
 
     private int quantity;
 

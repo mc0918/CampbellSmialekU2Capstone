@@ -9,6 +9,8 @@ import com.trilogyed.retailapi.viewmodel.RetailViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,15 +30,34 @@ public class ServiceLayer {
         this.productClient = productClient;
     }
 
-    public Invoice saveInvoice(Invoice invoice) {
+    public RetailViewModel saveInvoice(Invoice invoice) {
 
-            RetailViewModel model = buildRetailViewModel(invoice,
-                customerClient.getCustomer(invoice.getCustomerId()),
-                levelUpClient.findLevelUpsByCustomerId(invoice.getCustomerId()),
-                productClient.getProduct(invoice.getInvoiceItems().get(0).getInventory_id()));
+        RetailViewModel model = buildRetailViewModel(invoice,
+            customerClient.getCustomer(invoice.getCustomerId()),
+            levelUpClient.findLevelUpByCustomerId(invoice.getCustomerId()),
+            productClient.getProduct(invoice.getInvoiceItems().get(0).getInventory_id()));
 
+        //Calculate total cost and points earned
+        double totalCost = 0;
+        for(InvoiceItem item : invoice.getInvoiceItems()){
+            totalCost += item.getQuantity() * item.getUnitPrice().doubleValue();
+        }
+        int pointsToAdd = (int) ((totalCost / 50)*10);
+        model.setPoints(pointsToAdd);
 
+        //Subtract quantity ordered from product database
+        for (InvoiceItem item : invoice.getInvoiceItems()) {
+            for(Product product : model.getProducts()){
+                if(item.getInventory_id().equals(product.getproduct_id())){
+                    product.setInventory(product.getInventory() - item.getQuantity());
+                    productClient.updateProduct(product);
+                }
+            }
+        }
 
+        //After all the logic is complete, save the invoice and return the viewmodel
+        invoiceClient.saveInvoice(invoice);
+        return model;
     }
 
     public RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp, Product product) {
@@ -55,12 +76,18 @@ public class ServiceLayer {
         model.setPhone(customer.getphone());
 
         //PRODUCT
-        model.setProduct_id(product.getproduct_id());
-        model.setProduct_name(product.getproduct_name());
-        model.setProduct_description(product.getproduct_description());
-        model.setList_price(product.getlist_price());
-        model.setUnit_cost(product.getunit_cost());
-        model.setInventory(product.getInventory());
+        List<Product> products = new ArrayList<>();
+        invoiceItems.stream().forEach(invoiceItem -> {
+            products.add(productClient.getProduct(invoiceItem.getInventory_id()));
+        });
+        model.setProducts(products);
+
+//        model.setProduct_id(product.getproduct_id());
+//        model.setProduct_name(product.getproduct_name());
+//        model.setProduct_description(product.getproduct_description());
+//        model.setList_price(product.getlist_price());
+//        model.setUnit_cost(product.getunit_cost());
+//        model.setInventory(product.getInventory());
 
         //LEVELUP
         model.setLevelUpId(levelUp.getLevelUpId());

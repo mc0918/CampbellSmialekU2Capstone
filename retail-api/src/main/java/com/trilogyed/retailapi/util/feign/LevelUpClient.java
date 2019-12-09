@@ -26,7 +26,6 @@ public interface LevelUpClient {
     public String deleteLevelUp(@PathVariable int id) throws IdNotFound;
 
     @GetMapping(value = "/levelUp/customer/{id}")
-    public List<LevelUp> findLevelUpsByCustomerId(@PathVariable int id) throws IdNotFound;
+    public LevelUp findLevelUpByCustomerId(@PathVariable int id) throws IdNotFound;
 
-    @GetMapping(value = "/levelUp/")
 }

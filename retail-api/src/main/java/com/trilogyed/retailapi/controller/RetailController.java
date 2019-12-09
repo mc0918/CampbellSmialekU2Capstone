@@ -3,6 +3,7 @@ package com.trilogyed.retailapi.controller;
 import com.trilogyed.retailapi.model.Invoice;
 import com.trilogyed.retailapi.model.Product;
 import com.trilogyed.retailapi.service.ServiceLayer;
+import com.trilogyed.retailapi.viewmodel.RetailViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class RetailController {
     // Retail Endpoints
 
     @RequestMapping(value = "/invoices", method = RequestMethod.POST)
-    public Invoice submitInvoice(@RequestBody Invoice invoice) {
+    public RetailViewModel submitInvoice(@RequestBody Invoice invoice) {
         return null;
     }
 

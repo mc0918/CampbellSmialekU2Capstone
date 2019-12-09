@@ -175,7 +175,7 @@ public class ServiceLayerTest {
         LevelUp levelUp = LevelUp_ID;
 
         RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
-        viewModel.setPoints(51);
+        viewModel.setPoints(50);
         viewModel.getProducts().stream().forEach(product -> product.setInventory(1000));
 
         assertEquals(viewModel, service.saveInvoice(Invoice_EXPENSIVE_NO_ID));
@@ -273,6 +273,24 @@ public class ServiceLayerTest {
     }
 
 //    PRODUCT TESTS
+
+    @Test
+    public void saveProduct() {
+        Product actual = service.saveProduct(Product_NO_ID);
+        assertEquals(Product_ID, actual);
+    }
+
+    @Test
+    public void getProduct() {
+        Product actual = service.getProduct(1);
+        assertEquals(Product_ID, actual);
+    }
+
+    @Test
+    public void getAllProducts() {
+        List<Product> actual = service.getAllProducts();
+        assertEquals(Product_LIST, actual);
+    }
 
 //    LEVEL-UP TESTS
 

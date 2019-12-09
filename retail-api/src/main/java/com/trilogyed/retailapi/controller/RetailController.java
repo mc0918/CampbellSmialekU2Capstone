@@ -21,65 +21,61 @@ public class RetailController {
 
     @RequestMapping(value = "/invoices", method = RequestMethod.POST)
     public RetailViewModel submitInvoice(@RequestBody Invoice invoice) {
-        return null;
+        return serviceLayer.saveInvoice(invoice);
     }
 
     @RequestMapping(value = "/invoices/{id}", method = RequestMethod.GET)
-    public Invoice getInvoiceById(@PathVariable int id) {
-        return null;
+    public RetailViewModel getInvoiceById(@PathVariable int id) {
+        return serviceLayer.getInvoiceById(id);
     }
 
     @RequestMapping(value = "/invoices", method = RequestMethod.GET)
-    public List<Invoice> getAllInvoices() {
-        return null;
+    public List<RetailViewModel> getAllInvoices() {
+        return serviceLayer.getAllInvoices();
     }
 
     @RequestMapping(value = "/invoices/customer/{id}", method = RequestMethod.GET)
-    public List<Invoice> getInvoicesByCustomerId(@PathVariable int id) {
-        return null;
+    public List<RetailViewModel> getInvoicesByCustomerId(@PathVariable int id) {
+        return serviceLayer.getInvoicesByCustomerId(id);
     }
-
-//    @RequestMapping(value = "/products/inventory", method = RequestMethod.GET)
-//    public List<Product> getProductsInInventory() {
-//        return null;
-//    }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     public Product getProductById(@PathVariable int id) {
-        return null;
+        return serviceLayer.getProduct(id);
     }
 
     @RequestMapping(value = "/products/invoice/{id}", method = RequestMethod.GET) /* Hmmm......? Necessary? */
     public List<Product> getProductByInvoiceId(@PathVariable int id) {
-        return null;
+        return serviceLayer.getProductsByInvoiceId(id);
     }
 
     @RequestMapping(value = "/levelup/customer/{id}", method = RequestMethod.GET)
-    public int getLevelUpPointsByCustomerId(int id) {
-        return 0;
+    public Integer getLevelUpPointsByCustomerId(int id) {
+        return serviceLayer.getLevelUpPointsByCustomerId(id);
     }
 
     // Admin Endpoints
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public Product createProduct(@RequestBody Product product) {
-        return null;
+        return serviceLayer.saveProduct(product);
     }
 
     // getProductById is above in the Retail endpoints
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public List<Product> getAllProducts() {
-        return null;
+        return serviceLayer.getAllProducts();
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.PUT)
     public void updateProduct(@RequestBody Product product) {
+        serviceLayer.updateProduct(product);
 
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     public void deleteProduct(@PathVariable int id) {
-
+        serviceLayer.deleteProduct(id);
     }
 }

@@ -1,5 +1,7 @@
 package com.trilogyed.retailapi.service;
 
+import com.trilogyed.retailapi.exception.IdNotFound;
+import com.trilogyed.retailapi.exception.ProductOutOfStock;
 import com.trilogyed.retailapi.model.*;
 import com.trilogyed.retailapi.util.feign.CustomerClient;
 import com.trilogyed.retailapi.util.feign.InvoiceClient;
@@ -30,7 +32,8 @@ public class ServiceLayer {
         this.productClient = productClient;
     }
 
-    public RetailViewModel saveInvoice(Invoice invoice) {
+//    INVOICE
+    public RetailViewModel saveInvoice(Invoice invoice) throws ProductOutOfStock {
 
         invoice = invoiceClient.saveInvoice(invoice); //this should go after we check to see if customer id/product id/quantity ordered is valid
 
@@ -44,7 +47,8 @@ public class ServiceLayer {
         for(InvoiceItem item : invoice.getInvoiceItems()){
             totalCost += item.getQuantity() * item.getUnitPrice().doubleValue();
         }
-        int pointsToAdd = (int) ((totalCost / 50)*10);
+        int pointsToAdd = model.getPoints();
+        pointsToAdd += (int) ((totalCost / 50)*10);
         model.setPoints(pointsToAdd);
         //Todo: Submit points to level-up-service through queue
 
@@ -52,8 +56,12 @@ public class ServiceLayer {
         for (InvoiceItem item : invoice.getInvoiceItems()) {
             for(Product product : model.getProducts()){
                 if(item.getInventory_id().equals(product.getproduct_id())){
-                    product.setInventory(product.getInventory() - item.getQuantity());
-                    productClient.updateProduct(product);
+                    if(item.getQuantity() > product.getInventory() || item.getQuantity() < 1) {
+                        throw new ProductOutOfStock("You tried to order " + item.getQuantity() + " but only " + product.getInventory() + " of " + product.getproduct_name() + " remain.");
+                    } else {
+                        product.setInventory(product.getInventory() - item.getQuantity());
+                        productClient.updateProduct(product);
+                    }
                 }
             }
         }
@@ -62,6 +70,100 @@ public class ServiceLayer {
 //        invoiceClient.saveInvoice(invoice);
         return model;
     }
+
+    public RetailViewModel getInvoiceById(int id) {
+        Invoice invoice = invoiceClient.getInvoice(id);
+        RetailViewModel model = buildRetailViewModel(invoice,
+                customerClient.getCustomer(invoice.getCustomerId()),
+                levelUpClient.findLevelUpByCustomerId(invoice.getCustomerId())
+        );
+
+        return model;
+    }
+
+    public List<RetailViewModel> getAllInvoices(){
+        List<Invoice> invoices = invoiceClient.getAllInvoices();
+        List<RetailViewModel> retailViewModels = new ArrayList<>();
+
+        for (Invoice invoice : invoices) {
+            RetailViewModel model = buildRetailViewModel(invoice,
+                    customerClient.getCustomer(invoice.getCustomerId()),
+                    levelUpClient.findLevelUpByCustomerId(invoice.getCustomerId())
+            );
+            retailViewModels.add(model);
+        }
+
+        return retailViewModels;
+    }
+
+    public List<RetailViewModel> getInvoicesByCustomerId(int id) {
+        List<Invoice> invoices = invoiceClient.getInvoicesByCustomerId(id);
+        List<RetailViewModel> retailViewModels = new ArrayList<>();
+
+        for (Invoice invoice : invoices) {
+            RetailViewModel model = buildRetailViewModel(invoice,
+                    customerClient.getCustomer(invoice.getCustomerId()),
+                    levelUpClient.findLevelUpByCustomerId(invoice.getCustomerId())
+            );
+            retailViewModels.add(model);
+        }
+
+        return retailViewModels;
+    }
+
+    public void updateInvoice(Invoice invoice) {
+        invoiceClient.updateInvoice(invoice);
+    }
+
+    public void deleteInvoiceById(int id) {
+        invoiceClient.deleteInvoice(id);
+    }
+
+    //    PRODUCT
+    public Product saveProduct(Product o) {
+        return productClient.saveProduct(o);
+    }
+
+    public Product getProduct(int id) throws IdNotFound {
+        try{
+            return productClient.getProduct(id);
+        } catch(IdNotFound i){
+            throw new IdNotFound("bad thing");
+        }
+    }
+
+    public List<Product> getAllProducts() {
+        return productClient.getAllProducts();
+    }
+
+    public void updateProduct(Product o) throws IdNotFound {
+        try{
+            productClient.getProduct(o.getproduct_id());
+            productClient.updateProduct(o);
+        } catch(IdNotFound i){
+            throw new IdNotFound("bad thing");
+        }
+    }
+
+    public void deleteProduct(int id) throws IdNotFound {
+        try{
+            productClient.getProduct(id);
+            productClient.deleteProduct(id);
+        } catch(IdNotFound i){
+            throw new IdNotFound("bad thing");
+        }
+    }
+
+    public void updateInventory(int id, int inventory) throws IdNotFound {
+        try{
+            productClient.getProduct(id);
+            productClient.updateInventory(id, inventory);
+        } catch(IdNotFound i ){
+            throw new IdNotFound("bad thing");
+        }
+    }
+
+
 
     public RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp) {
         RetailViewModel model = new RetailViewModel();

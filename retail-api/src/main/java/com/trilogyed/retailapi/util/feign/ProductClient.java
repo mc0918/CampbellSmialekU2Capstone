@@ -23,4 +23,7 @@ public interface ProductClient {
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     public String deleteProduct(@PathVariable int id);
+
+    @RequestMapping(value = "/products/inventory", method = RequestMethod.PUT)
+    public String updateInventory(@RequestParam(required = true) int id, @RequestParam(required = true) int inventory) throws IdNotFound;
 }

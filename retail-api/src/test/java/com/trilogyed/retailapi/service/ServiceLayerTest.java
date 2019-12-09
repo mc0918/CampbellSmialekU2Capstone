@@ -1,6 +1,7 @@
 package com.trilogyed.retailapi.service;
 
 import com.trilogyed.retailapi.exception.IdNotFound;
+import com.trilogyed.retailapi.exception.ProductOutOfStock;
 import com.trilogyed.retailapi.model.*;
 import com.trilogyed.retailapi.util.feign.CustomerClient;
 import com.trilogyed.retailapi.util.feign.InvoiceClient;
@@ -38,12 +39,15 @@ public class ServiceLayerTest {
     private static final Customer Customer_BAD_UPDATE = new Customer(DNE_ID,"first name", "last name", "street", "city", "zip", "email", "phone");
     private static final List<Customer> Customer_LIST = new ArrayList<>(Arrays.asList(Customer_ID));
 
+    private static final InvoiceItem InvoiceItem_EXPENSIVE = new InvoiceItem(1, 1, 1, 100, new BigDecimal("2.50"));
     private static final InvoiceItem InvoiceItem_NO_ID = new InvoiceItem(1,1,1, UNIT_PRICE);
     private static final InvoiceItem InvoiceItem_ID = new InvoiceItem(1,1,1,1, UNIT_PRICE);
     private static final InvoiceItem InvoiceItem_UPDATED = new InvoiceItem(1,1,1,3, UNIT_PRICE);
     private static final InvoiceItem InvoiceItem_BAD_UPDATE = new InvoiceItem(DNE_ID,1,1,1, UNIT_PRICE);
     private static final List<InvoiceItem> InvoiceItem_LIST = new ArrayList<>(Arrays.asList(InvoiceItem_ID));
 
+    private static final Invoice Invoice_EXPENSIVE_NO_ID = new Invoice(1, DATE, new ArrayList<>(Arrays.asList(InvoiceItem_EXPENSIVE)));
+    private static final Invoice Invoice_EXPENSIVE_ID = new Invoice(1,1, DATE, new ArrayList<>(Arrays.asList(InvoiceItem_EXPENSIVE)));
     private static final Invoice Invoice_NO_ID = new Invoice(1, DATE, InvoiceItem_LIST);
     private static final Invoice Invoice_ID = new Invoice(1, 1, DATE, InvoiceItem_LIST);
     private static final Invoice Invoice_UPDATED = new Invoice(1, 1, UPDATED_DATE, InvoiceItem_LIST);
@@ -97,6 +101,7 @@ public class ServiceLayerTest {
     private void setUpInvoiceClientMock() {
         invoiceClient = mock(InvoiceClient.class);
 
+        doReturn(Invoice_EXPENSIVE_ID).when(invoiceClient).saveInvoice(Invoice_EXPENSIVE_NO_ID);
         doReturn(Invoice_ID).when(invoiceClient).saveInvoice(Invoice_NO_ID);
         doReturn(Invoice_ID).when(invoiceClient).getInvoice(1);
         doReturn(Invoice_LIST).when(invoiceClient).getAllInvoices();
@@ -113,6 +118,7 @@ public class ServiceLayerTest {
         doReturn(InvoiceItem_ID).when(invoiceClient).saveInvoiceItem(InvoiceItem_NO_ID);
         doReturn(InvoiceItem_ID).when(invoiceClient).getInvoiceItem(1);
         doReturn(InvoiceItem_LIST).when(invoiceClient).getAllInvoiceItems();
+        doReturn(Invoice_LIST).when(invoiceClient).getInvoicesByCustomerId(1);
 
         //exceptions
         doThrow(new IdNotFound("bad thing")).when(invoiceClient).getInvoiceItem(DNE_ID);
@@ -162,34 +168,109 @@ public class ServiceLayerTest {
     }
 
     @Test
-    public void shouldSaveInvoiceAndUpdatePoints(){}
+    public void shouldSaveInvoiceAndUpdatePoints(){
+
+        Invoice invoice = Invoice_EXPENSIVE_ID;
+        Customer customer = Customer_ID;
+        LevelUp levelUp = LevelUp_ID;
+
+        RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
+        viewModel.setPoints(51);
+        viewModel.getProducts().stream().forEach(product -> product.setInventory(1000));
+
+        assertEquals(viewModel, service.saveInvoice(Invoice_EXPENSIVE_NO_ID));
+    }
+
+    @Test(expected = ProductOutOfStock.class)
+    public void shouldThrowErrorWhenOrderQuantityLessThan0(){
+        Invoice invoice = Invoice_EXPENSIVE_ID;
+        Customer customer = Customer_ID;
+        LevelUp levelUp = LevelUp_ID;
+
+        RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
+        viewModel.setPoints(51);
+        viewModel.getInvoiceItems().stream().forEach(item -> item.setQuantity(0));
+
+        assertEquals(viewModel, service.saveInvoice(Invoice_EXPENSIVE_NO_ID));
+    }
+
+    @Test(expected = IdNotFound.class)
+    public void shouldThrowErrorWhenInvalidProductsOrdered(){
+        Invoice invoice = Invoice_ID;
+        invoice.getInvoiceItems().stream().forEach(invoiceItem -> invoiceItem.setInventory_id(DNE_ID));
+        Customer customer = Customer_ID;
+        LevelUp levelUp = LevelUp_ID;
+        levelUp.setPoints(0);
+
+        RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
+
+        assertEquals(viewModel, service.saveInvoice(Invoice_NO_ID));
+    }
+
+    @Test(expected = IdNotFound.class)
+    public void shouldThrowErrorWhenInvalidCustomerId(){
+        Invoice invoice = Invoice_ID;
+        invoice.setCustomerId(DNE_ID);
+        Customer customer = Customer_ID;
+        LevelUp levelUp = LevelUp_ID;
+        levelUp.setPoints(0);
+
+        RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
+
+        assertEquals(viewModel, service.saveInvoice(Invoice_NO_ID));
+    }
+
+    @Test(expected = ProductOutOfStock.class)
+    public void shouldThrowErrorWhenOrderQuantityIsGreaterThanInventoryRemaining(){
+        Invoice invoice = Invoice_EXPENSIVE_ID;
+        Customer customer = Customer_ID;
+        LevelUp levelUp = LevelUp_ID;
+
+        RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
+        viewModel.setPoints(51);
+
+        assertEquals(viewModel, service.saveInvoice(Invoice_EXPENSIVE_NO_ID));
+    }
 
     @Test
-    public void shouldThrowErrorWhenOrderQuantityLessThan0(){}
+    public void shouldGetInvoiceAndReturnRetailViewModel(){
+        Invoice invoice = Invoice_ID;
+        Customer customer = Customer_ID;
+        LevelUp levelUp = LevelUp_ID;
+        levelUp.setPoints(0);
+
+        RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
+
+        assertEquals(viewModel, service.getInvoiceById(Invoice_ID.getId()));
+    }
 
     @Test
-    public void shouldThrowErrorWhenInvalidProductsOrdered(){}
+    public void shouldGetAllInvoicesAndReturnRetailViewModels(){
+        Invoice invoice = Invoice_ID;
+        Customer customer = Customer_ID;
+        LevelUp levelUp = LevelUp_ID;
+        levelUp.setPoints(0);
+
+        RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
+        List<RetailViewModel> viewModelList = new ArrayList<>(Arrays.asList(viewModel));
+
+        assertEquals(viewModelList.size(), service.getAllInvoices().size());
+        assertEquals(viewModelList, service.getAllInvoices());
+    }
 
     @Test
-    public void shouldThrowErrorWhenInvalidCustomerId(){}
+    public void shouldGetAllInvoicesByCustomerId(){
+        Invoice invoice = Invoice_ID;
+        Customer customer = Customer_ID;
+        LevelUp levelUp = LevelUp_ID;
+        levelUp.setPoints(0);
 
-    @Test
-    public void shouldThrowErrorWhenOrderQuantityIsGreaterThanInventoryRemaining(){}
+        RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
+        List<RetailViewModel> viewModelList = new ArrayList<>(Arrays.asList(viewModel));
 
-    @Test
-    public void shouldGetInvoiceAndReturnRetailViewModel(){}
-
-    @Test
-    public void shouldGetAllInvoicesAndReturnRetailViewModels(){}
-
-    @Test
-    public void shouldGetAllInvoicesByCustomerId(){}
-
-    @Test
-    public void shouldUpdateInvoice(){}
-
-    @Test
-    public void shouldDeleteInvoice(){}
+        assertEquals(viewModelList.size(), service.getInvoicesByCustomerId(Invoice_ID.getCustomerId()).size());
+        assertEquals(viewModelList, service.getInvoicesByCustomerId(Invoice_ID.getCustomerId()));
+    }
 
 //    PRODUCT TESTS
 

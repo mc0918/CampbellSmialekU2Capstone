@@ -175,7 +175,7 @@ public class ServiceLayer {
         return levelUp.getPoints();
     }
 
-    private RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp) {
+    RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp) {
         RetailViewModel model = new RetailViewModel();
         List<InvoiceItem> invoiceItems = invoice.getInvoiceItems();
         HashMap<Integer, Integer> itemDoubleMap = new HashMap<>();

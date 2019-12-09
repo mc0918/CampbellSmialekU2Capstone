@@ -21,7 +21,7 @@ public class RetailViewModel {
 
 //    Invoice Stuff
     private Integer id;
-    private Integer customerId = customer_id; //might not even need this, because duplicate?
+//    private Integer customerId = customer_id; //might not even need this, because duplicate?
     private LocalDate purchaseDate;
     private List<InvoiceItem> invoiceItems;
 
@@ -116,13 +116,13 @@ public class RetailViewModel {
         this.id = id;
     }
 
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
-    }
+//    public Integer getCustomerId() {
+//        return customerId;
+//    }
+//
+//    public void setCustomerId(Integer customerId) {
+//        this.customerId = customerId;
+//    }
 
     public LocalDate getPurchaseDate() {
         return purchaseDate;
@@ -243,7 +243,7 @@ public class RetailViewModel {
                 Objects.equals(email, model.email) &&
                 Objects.equals(phone, model.phone) &&
                 Objects.equals(id, model.id) &&
-                Objects.equals(customerId, model.customerId) &&
+//                Objects.equals(customerId, model.customerId) &&
                 Objects.equals(purchaseDate, model.purchaseDate) &&
                 Objects.equals(invoiceItems, model.invoiceItems) &&
                 Objects.equals(quantity, model.quantity) &&
@@ -255,7 +255,7 @@ public class RetailViewModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(customer_id, first_name, last_name, street, city, zip, email, phone, id, customerId, purchaseDate, invoiceItems, quantity, levelUpId, points, memberDate, products);
+        return Objects.hash(customer_id, first_name, last_name, street, city, zip, email, phone, id, purchaseDate, invoiceItems, quantity, levelUpId, points, memberDate, products);
     }
 
     @Override
@@ -270,7 +270,7 @@ public class RetailViewModel {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", id=" + id +
-                ", customerId=" + customerId +
+//                ", customerId=" + customerId +
                 ", purchaseDate=" + purchaseDate +
                 ", invoiceItems=" + invoiceItems +
                 ", quantity=" + quantity +

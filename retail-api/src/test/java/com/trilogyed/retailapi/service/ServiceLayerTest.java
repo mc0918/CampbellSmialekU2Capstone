@@ -127,6 +127,8 @@ public class ServiceLayerTest {
         doReturn(LevelUp_ID).when(levelUpClient).getLevelUp(1);
         doReturn(LevelUp_LIST).when(levelUpClient).getAllLevelUps();
 
+        doReturn(LevelUp_ID).when(levelUpClient).findLevelUpByCustomerId(1);
+
         //exceptions
         doThrow(new IdNotFound("bad thing")).when(levelUpClient).getLevelUp(DNE_ID);
         doThrow(new IdNotFound("bad thing")).when(levelUpClient).updateLevelUp(LevelUp_BAD_UPDATE);
@@ -142,12 +144,58 @@ public class ServiceLayerTest {
         //exceptions
         doThrow(new IdNotFound("bad thing")).when(productClient).getProduct(DNE_ID);
         doThrow(new IdNotFound("bad thing")).when(productClient).updateProduct(Product_BAD_UPDATE);
-        doThrow(new IdNotFound("bad thing")).when(productClient).deleteProduct(DNE_ID);     }
-
-    @Test
-    public void shouldSaveInvoice() {
+        doThrow(new IdNotFound("bad thing")).when(productClient).deleteProduct(DNE_ID);
     }
 
+
+//  INVOICE TEST
+    @Test
+    public void shouldSaveInvoiceAndReturnRetailViewModel() {
+        Invoice invoice = Invoice_ID;
+        Customer customer = Customer_ID;
+        LevelUp levelUp = LevelUp_ID;
+        levelUp.setPoints(0);
+
+        RetailViewModel viewModel = service.buildRetailViewModel(invoice, customer, levelUp);
+
+        assertEquals(viewModel, service.saveInvoice(Invoice_NO_ID));
+    }
+
+    @Test
+    public void shouldSaveInvoiceAndUpdatePoints(){}
+
+    @Test
+    public void shouldThrowErrorWhenOrderQuantityLessThan0(){}
+
+    @Test
+    public void shouldThrowErrorWhenInvalidProductsOrdered(){}
+
+    @Test
+    public void shouldThrowErrorWhenInvalidCustomerId(){}
+
+    @Test
+    public void shouldThrowErrorWhenOrderQuantityIsGreaterThanInventoryRemaining(){}
+
+    @Test
+    public void shouldGetInvoiceAndReturnRetailViewModel(){}
+
+    @Test
+    public void shouldGetAllInvoicesAndReturnRetailViewModels(){}
+
+    @Test
+    public void shouldGetAllInvoicesByCustomerId(){}
+
+    @Test
+    public void shouldUpdateInvoice(){}
+
+    @Test
+    public void shouldDeleteInvoice(){}
+
+//    PRODUCT TESTS
+
+//    LEVEL-UP TESTS
+
+//    RETAIL VIEW MODEL TEST
     @Test
     public void shouldBuildRetailViewModel() {
         RetailViewModel model = new RetailViewModel();

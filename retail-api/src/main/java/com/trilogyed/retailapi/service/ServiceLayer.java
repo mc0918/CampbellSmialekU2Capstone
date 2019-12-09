@@ -32,10 +32,11 @@ public class ServiceLayer {
 
     public RetailViewModel saveInvoice(Invoice invoice) {
 
+        invoice = invoiceClient.saveInvoice(invoice); //this should go after we check to see if customer id/product id/quantity ordered is valid
+
         RetailViewModel model = buildRetailViewModel(invoice,
             customerClient.getCustomer(invoice.getCustomerId()),
             levelUpClient.findLevelUpByCustomerId(invoice.getCustomerId())
-//            productClient.getProduct(invoice.getInvoiceItems().get(0).getInventory_id())
         );
 
         //Calculate total cost and points earned
@@ -45,6 +46,7 @@ public class ServiceLayer {
         }
         int pointsToAdd = (int) ((totalCost / 50)*10);
         model.setPoints(pointsToAdd);
+        //Todo: Submit points to level-up-service through queue
 
         //Subtract quantity ordered from product database
         for (InvoiceItem item : invoice.getInvoiceItems()) {
@@ -57,7 +59,7 @@ public class ServiceLayer {
         }
 
         //After all the logic is complete, save the invoice and return the viewmodel
-        invoiceClient.saveInvoice(invoice);
+//        invoiceClient.saveInvoice(invoice);
         return model;
     }
 
@@ -82,13 +84,6 @@ public class ServiceLayer {
             products.add(productClient.getProduct(invoiceItem.getInventory_id()));
         });
         model.setProducts(products);
-
-//        model.setProduct_id(product.getproduct_id());
-//        model.setProduct_name(product.getproduct_name());
-//        model.setProduct_description(product.getproduct_description());
-//        model.setList_price(product.getlist_price());
-//        model.setUnit_cost(product.getunit_cost());
-//        model.setInventory(product.getInventory());
 
         //LEVELUP
         model.setLevelUpId(levelUp.getLevelUpId());

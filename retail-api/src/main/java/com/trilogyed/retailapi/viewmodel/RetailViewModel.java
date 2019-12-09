@@ -233,37 +233,51 @@ public class RetailViewModel {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RetailViewModel that = (RetailViewModel) o;
-        return quantity == that.quantity &&
-//                Double.compare(that.list_price, list_price) == 0 &&
-//                Double.compare(that.unit_cost, unit_cost) == 0 &&
-//                inventory == that.inventory &&
-                Objects.equals(customer_id, that.customer_id) &&
-                Objects.equals(first_name, that.first_name) &&
-                Objects.equals(last_name, that.last_name) &&
-                Objects.equals(street, that.street) &&
-                Objects.equals(city, that.city) &&
-                Objects.equals(zip, that.zip) &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(phone, that.phone) &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(customerId, that.customerId) &&
-                Objects.equals(purchaseDate, that.purchaseDate) &&
-                Objects.equals(invoiceItems, that.invoiceItems) &&
-                Objects.equals(levelUpId, that.levelUpId) &&
-                Objects.equals(points, that.points) &&
-                Objects.equals(memberDate, that.memberDate);
-//                Objects.equals(product_id, that.product_id) &&
-//                Objects.equals(product_name, that.product_name) &&
-//                Objects.equals(product_description, that.product_description);
+        RetailViewModel model = (RetailViewModel) o;
+        return Objects.equals(customer_id, model.customer_id) &&
+                Objects.equals(first_name, model.first_name) &&
+                Objects.equals(last_name, model.last_name) &&
+                Objects.equals(street, model.street) &&
+                Objects.equals(city, model.city) &&
+                Objects.equals(zip, model.zip) &&
+                Objects.equals(email, model.email) &&
+                Objects.equals(phone, model.phone) &&
+                Objects.equals(id, model.id) &&
+                Objects.equals(customerId, model.customerId) &&
+                Objects.equals(purchaseDate, model.purchaseDate) &&
+                Objects.equals(invoiceItems, model.invoiceItems) &&
+                Objects.equals(quantity, model.quantity) &&
+                Objects.equals(levelUpId, model.levelUpId) &&
+                Objects.equals(points, model.points) &&
+                Objects.equals(memberDate, model.memberDate) &&
+                Objects.equals(products, model.products);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customer_id, first_name, last_name, street, city, zip, email, phone, id, customerId, purchaseDate, invoiceItems, quantity, levelUpId, points, memberDate
-//                ,product_id, product_name, product_description, list_price, unit_cost, inventory
-        );
+        return Objects.hash(customer_id, first_name, last_name, street, city, zip, email, phone, id, customerId, purchaseDate, invoiceItems, quantity, levelUpId, points, memberDate, products);
     }
 
-
+    @Override
+    public String toString() {
+        return "RetailViewModel{" +
+                "customer_id=" + customer_id +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", zip='" + zip + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", id=" + id +
+                ", customerId=" + customerId +
+                ", purchaseDate=" + purchaseDate +
+                ", invoiceItems=" + invoiceItems +
+                ", quantity=" + quantity +
+                ", levelUpId=" + levelUpId +
+                ", points=" + points +
+                ", memberDate=" + memberDate +
+                ", products=" + products +
+                '}';
+    }
 }

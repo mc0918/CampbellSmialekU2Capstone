@@ -34,8 +34,9 @@ public class ServiceLayer {
 
         RetailViewModel model = buildRetailViewModel(invoice,
             customerClient.getCustomer(invoice.getCustomerId()),
-            levelUpClient.findLevelUpByCustomerId(invoice.getCustomerId()),
-            productClient.getProduct(invoice.getInvoiceItems().get(0).getInventory_id()));
+            levelUpClient.findLevelUpByCustomerId(invoice.getCustomerId())
+//            productClient.getProduct(invoice.getInvoiceItems().get(0).getInventory_id())
+        );
 
         //Calculate total cost and points earned
         double totalCost = 0;
@@ -60,7 +61,7 @@ public class ServiceLayer {
         return model;
     }
 
-    public RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp, Product product) {
+    public RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp) {
         RetailViewModel model = new RetailViewModel();
         List<InvoiceItem> invoiceItems = invoice.getInvoiceItems();
         HashMap<Integer, Integer> itemDoubleMap = new HashMap<>();

@@ -117,6 +117,19 @@ public class ProductControllerTest {
     }
 
     @Test
+    public void updateProductInventory() throws Exception {
+        mvc.perform(put("/products/inventory?id=1&inventory=17")
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        //for things with random or json parsing errors
+        //.andExpect(jsonPath("$.id").value("" + REAL_LOCATION.getId()))
+        //.andExpect(jsonPath("$.description").value(REAL_LOCATION.getDescription()))
+        //.andExpect(jsonPath("$.location").value(REAL_LOCATION.getLocation()));
+    }
+
+    @Test
     public void deleteProduct() throws Exception {
         mvc.perform(delete("/products/{id}", 1))
                 .andDo(print())

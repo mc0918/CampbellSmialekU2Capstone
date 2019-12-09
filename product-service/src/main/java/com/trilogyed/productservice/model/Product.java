@@ -3,12 +3,13 @@ package com.trilogyed.productservice.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
     /*
     !!!!!!!!!!!!!!!!!!!!!!!
         DO

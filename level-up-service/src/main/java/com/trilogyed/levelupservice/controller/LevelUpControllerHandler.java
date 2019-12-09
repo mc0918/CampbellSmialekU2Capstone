@@ -1,5 +1,6 @@
 package com.trilogyed.levelupservice.controller;
 
+import com.trilogyed.levelupservice.exceptions.IdAlreadyExists;
 import com.trilogyed.levelupservice.exceptions.IdNotFound;
 import org.springframework.hateoas.mediatype.vnderrors.VndErrors;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,15 @@ import org.springframework.web.context.request.WebRequest;
 public class LevelUpControllerHandler {
     @ExceptionHandler(value = {IdNotFound.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<VndErrors> handleBadEquipmentId(IdNotFound e, WebRequest request) {
+    public ResponseEntity<VndErrors> handleBadId(IdNotFound e, WebRequest request) {
+        VndErrors error = new VndErrors(request.toString(), e.getMessage());
+        ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        return responseEntity;
+    }
+
+    @ExceptionHandler(value = {IdAlreadyExists.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<VndErrors> handleBadId(IdAlreadyExists e, WebRequest request) {
         VndErrors error = new VndErrors(request.toString(), e.getMessage());
         ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         return responseEntity;

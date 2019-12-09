@@ -48,18 +48,6 @@ public class Product {
         return Objects.hash(product_id, product_name, product_description, list_price, unit_cost, inventory);
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "product_id=" + product_id +
-                ", product_name='" + product_name + '\'' +
-                ", product_description='" + product_description + '\'' +
-                ", list_price=" + list_price +
-                ", unit_cost=" + unit_cost +
-                ", inventory=" + inventory +
-                '}';
-    }
-
     public Integer getproduct_id() {
         return product_id;
     }
@@ -100,4 +88,11 @@ public class Product {
         this.unit_cost = unit_cost;
     }
 
+    public int getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(int inventory) {
+        this.inventory = inventory;
+    }
 }

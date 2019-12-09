@@ -27,4 +27,6 @@ public interface LevelUpClient {
 
     @GetMapping(value = "/levelUp/customer/{id}")
     public List<LevelUp> findLevelUpsByCustomerId(@PathVariable int id) throws IdNotFound;
+
+    @GetMapping(value = "/levelUp/")
 }

@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface LevelUpRepository extends JpaRepository<LevelUp, Integer> {
-    public List<LevelUp> findAllByCustomerId(int id);
+//    public List<LevelUp> findAllByCustomerId(int id);
+
+    public LevelUp findByCustomerId(int id);
 
 }

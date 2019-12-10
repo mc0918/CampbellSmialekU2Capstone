@@ -36,6 +36,7 @@ public class ServiceLayer {
     public RetailViewModel saveInvoice(Invoice invoice) throws ProductOutOfStock {
 
         invoice = invoiceClient.saveInvoice(invoice); //this should go after we check to see if customer id/product id/quantity ordered is valid
+        List<InvoiceItem> testList = invoice.getInvoiceItems();
 
         RetailViewModel model = buildRetailViewModel(invoice,
                 customerClient.getCustomer(invoice.getCustomerId()),
@@ -52,19 +53,20 @@ public class ServiceLayer {
         model.setPoints(pointsToAdd);
         //Todo: Submit points to level-up-service through queue
 
+
         //Subtract quantity ordered from product database
-        for (InvoiceItem item : invoice.getInvoiceItems()) {
-            for (Product product : model.getProducts()) {
-                if (item.getInventory_id().equals(product.getproduct_id())) {
-                    if (item.getQuantity() > product.getInventory() || item.getQuantity() < 1) {
-                        throw new ProductOutOfStock("You tried to order " + item.getQuantity() + " but only " + product.getInventory() + " of " + product.getproduct_name() + " remain.");
-                    } else {
-                        product.setInventory(product.getInventory() - item.getQuantity());
-                        productClient.updateProduct(product);
-                    }
-                }
-            }
-        }
+//        for (InvoiceItem item : invoice.getInvoiceItems()) {
+//            for (Product product : model.getProducts()) {
+//                if (item.getInventory_id().equals(product.getproduct_id())) {
+//                    if (item.getQuantity() > product.getInventory() || item.getQuantity() < 1) {
+//                        throw new ProductOutOfStock("You tried to order " + item.getQuantity() + " but only " + product.getInventory() + " of " + product.getproduct_name() + " remain.");
+//                    } else {
+//                        product.setInventory(product.getInventory() - item.getQuantity());
+//                        productClient.updateProduct(product); //If there is no product in DB a 500 error will be thrown
+//                    }
+//                }
+//            }
+//        }
 
         //After all the logic is complete, save the invoice and return the viewmodel
 //        invoiceClient.saveInvoice(invoice);
@@ -175,7 +177,7 @@ public class ServiceLayer {
         return levelUp.getPoints();
     }
 
-    RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp) {
+    public RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp) {
         RetailViewModel model = new RetailViewModel();
         List<InvoiceItem> invoiceItems = invoice.getInvoiceItems();
         HashMap<Integer, Integer> itemDoubleMap = new HashMap<>();
@@ -191,11 +193,11 @@ public class ServiceLayer {
         model.setPhone(customer.getphone());
 
         //PRODUCT
-        List<Product> products = new ArrayList<>();
-        invoiceItems.stream().forEach(invoiceItem -> {
-            products.add(productClient.getProduct(invoiceItem.getInventory_id()));
-        });
-        model.setProducts(products);
+//        List<Product> products = new ArrayList<>();
+//        invoiceItems.stream().forEach(invoiceItem -> {
+//            products.add(productClient.getProduct(invoiceItem.getInventory_id()));
+//        });
+//        model.setProducts(products);
 
         //LEVELUP
         model.setLevelUpId(levelUp.getLevelUpId());

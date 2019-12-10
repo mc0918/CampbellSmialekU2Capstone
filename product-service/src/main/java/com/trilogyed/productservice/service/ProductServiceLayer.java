@@ -43,7 +43,7 @@ public class ProductServiceLayer {
 
     public void updateProduct(Product o) throws IdNotFound {
         try{
-            repository.getOne(o.getproduct_id());
+//            repository.getOne(o.getproduct_id());
             repository.save(o);
         } catch(NullPointerException n){
             throw new IdNotFound("bad thing");

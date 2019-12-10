@@ -1,17 +1,18 @@
-package com.trilogyed.retailapi.model;
+package com.trilogyed.levelupqueueconsumer.util.messages;
+
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.sun.istack.internal.NotNull;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class LevelUp implements Serializable {
+public class LevelUpEntry implements Serializable {
     private Integer levelUpId;
 
     @NotNull
@@ -25,15 +26,9 @@ public class LevelUp implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate memberDate;
 
-    public LevelUp(){}
+    public LevelUpEntry(){}
 
-    public LevelUp(Integer customerId, Integer points, @NotNull LocalDate memberDate) {
-        this.customerId = customerId;
-        this.points = points;
-        this.memberDate = memberDate;
-    }
-
-    public LevelUp(Integer levelUpId, Integer customerId, Integer points, @NotNull LocalDate memberDate) {
+    public LevelUpEntry(Integer levelUpId, Integer customerId, Integer points, LocalDate memberDate) {
         this.levelUpId = levelUpId;
         this.customerId = customerId;
         this.points = points;
@@ -76,11 +71,11 @@ public class LevelUp implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LevelUp levelUp = (LevelUp) o;
-        return Objects.equals(levelUpId, levelUp.levelUpId) &&
-                Objects.equals(customerId, levelUp.customerId) &&
-                Objects.equals(points, levelUp.points) &&
-                Objects.equals(memberDate, levelUp.memberDate);
+        LevelUpEntry that = (LevelUpEntry) o;
+        return Objects.equals(levelUpId, that.levelUpId) &&
+                Objects.equals(customerId, that.customerId) &&
+                Objects.equals(points, that.points) &&
+                Objects.equals(memberDate, that.memberDate);
     }
 
     @Override
@@ -90,7 +85,7 @@ public class LevelUp implements Serializable {
 
     @Override
     public String toString() {
-        return "LevelUp{" +
+        return "LevelUpEntry{" +
                 "levelUpId=" + levelUpId +
                 ", customerId=" + customerId +
                 ", points=" + points +

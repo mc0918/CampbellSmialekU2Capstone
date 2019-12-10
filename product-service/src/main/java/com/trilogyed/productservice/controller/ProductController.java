@@ -47,6 +47,7 @@ public class ProductController {
         return service.getAllProducts();
     }
 
+
     @CacheEvict(key = "#o.getproduct_id()")
     @RequestMapping(value = "/products", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)

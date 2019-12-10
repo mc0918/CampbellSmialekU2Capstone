@@ -24,6 +24,11 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+
+/*
+* Run these tests individually or some will fail
+* */
+
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
 public class ServiceLayerTest {

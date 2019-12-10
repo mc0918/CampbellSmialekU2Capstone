@@ -1,0 +1,1104 @@
+openapi: 3.0.0
+info:
+  description: Api Documentation
+  version: "1.0"
+  title: Api Documentation
+  termsOfService: urn:tos
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+tags:
+  - name: basic-error-controller
+    description: Basic Error Controller
+  - name: operation-handler
+    description: Operation Handler
+  - name: web-mvc-links-handler
+    description: Web Mvc Links Handler
+paths:
+  /actuator:
+    get:
+      tags:
+        - web-mvc-links-handler
+      summary: links
+      operationId: linksUsingGET
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/Link"
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/Link"
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: "#/components/schemas/Link"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/archaius:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/beans:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_1
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/caches:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_3
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+    delete:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingDELETE_1
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: object
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      deprecated: false
+  "/actuator/caches/{cache}":
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_2
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+    delete:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingDELETE
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      deprecated: false
+  /actuator/conditions:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_4
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/configprops:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_5
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/env:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_7
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingPOST
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingPOSTBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+    delete:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingDELETE_2
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      deprecated: false
+  "/actuator/env/{toMatch}":
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_6
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/features:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_8
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/health:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_10
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/health/**:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_9
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/heapdump:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_11
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/info:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_12
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/loggers:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_14
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  "/actuator/loggers/{name}":
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_13
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingPOST_1
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingPOSTBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: object
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/mappings:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_15
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/metrics:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_17
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  "/actuator/metrics/{requiredMetricName}":
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_16
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/refresh:
+    post:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingPOST_2
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/scheduledtasks:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_18
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/service-registry:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_19
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+    post:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingPOST_3
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingPOSTBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /actuator/threaddump:
+    get:
+      tags:
+        - operation-handler
+      summary: handle
+      operationId: handleUsingGET_20
+      requestBody:
+        $ref: "#/components/requestBodies/handleUsingGETBody"
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain;charset=UTF-8:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+            application/json:
+              schema:
+                type: object
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+  /error:
+    get:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingGET
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/ModelAndView"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+    head:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingHEAD
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/ModelAndView"
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      deprecated: false
+    post:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPOST
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/ModelAndView"
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPUT
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/ModelAndView"
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      deprecated: false
+    delete:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingDELETE
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/ModelAndView"
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      deprecated: false
+    options:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingOPTIONS
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/ModelAndView"
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      deprecated: false
+    patch:
+      tags:
+        - basic-error-controller
+      summary: errorHtml
+      operationId: errorHtmlUsingPATCH
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/ModelAndView"
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      deprecated: false
+servers:
+  - url: //localhost:6969/
+components:
+  requestBodies:
+    handleUsingGETBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+      description: body
+    handleUsingPOSTBody:
+      content:
+        application/vnd.spring-boot.actuator.v3+json:
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+        application/json:
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+        application/vnd.spring-boot.actuator.v2+json:
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+      description: body
+  schemas:
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        templated:
+          type: boolean
+      title: Link
+    ModelAndView:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        model:
+          type: object
+        modelMap:
+          type: object
+          additionalProperties:
+            type: object
+        reference:
+          type: boolean
+        status:
+          type: string
+          enum:
+            - 100 CONTINUE
+            - 101 SWITCHING_PROTOCOLS
+            - 102 PROCESSING
+            - 103 CHECKPOINT
+            - 200 OK
+            - 201 CREATED
+            - 202 ACCEPTED
+            - 203 NON_AUTHORITATIVE_INFORMATION
+            - 204 NO_CONTENT
+            - 205 RESET_CONTENT
+            - 206 PARTIAL_CONTENT
+            - 207 MULTI_STATUS
+            - 208 ALREADY_REPORTED
+            - 226 IM_USED
+            - 300 MULTIPLE_CHOICES
+            - 301 MOVED_PERMANENTLY
+            - 302 FOUND
+            - 302 MOVED_TEMPORARILY
+            - 303 SEE_OTHER
+            - 304 NOT_MODIFIED
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
+            - 407 PROXY_AUTHENTICATION_REQUIRED
+            - 408 REQUEST_TIMEOUT
+            - 409 CONFLICT
+            - 410 GONE
+            - 411 LENGTH_REQUIRED
+            - 412 PRECONDITION_FAILED
+            - 413 PAYLOAD_TOO_LARGE
+            - 413 REQUEST_ENTITY_TOO_LARGE
+            - 414 URI_TOO_LONG
+            - 414 REQUEST_URI_TOO_LONG
+            - 415 UNSUPPORTED_MEDIA_TYPE
+            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+            - 417 EXPECTATION_FAILED
+            - 418 I_AM_A_TEAPOT
+            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+            - 420 METHOD_FAILURE
+            - 421 DESTINATION_LOCKED
+            - 422 UNPROCESSABLE_ENTITY
+            - 423 LOCKED
+            - 424 FAILED_DEPENDENCY
+            - 425 TOO_EARLY
+            - 426 UPGRADE_REQUIRED
+            - 428 PRECONDITION_REQUIRED
+            - 429 TOO_MANY_REQUESTS
+            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+            - 500 INTERNAL_SERVER_ERROR
+            - 501 NOT_IMPLEMENTED
+            - 502 BAD_GATEWAY
+            - 503 SERVICE_UNAVAILABLE
+            - 504 GATEWAY_TIMEOUT
+            - 505 HTTP_VERSION_NOT_SUPPORTED
+            - 506 VARIANT_ALSO_NEGOTIATES
+            - 507 INSUFFICIENT_STORAGE
+            - 508 LOOP_DETECTED
+            - 509 BANDWIDTH_LIMIT_EXCEEDED
+            - 510 NOT_EXTENDED
+            - 511 NETWORK_AUTHENTICATION_REQUIRED
+        view:
+          $ref: "#/components/schemas/View"
+        viewName:
+          type: string
+      title: ModelAndView
+    View:
+      type: object
+      properties:
+        contentType:
+          type: string
+      title: View
+    Map_string_Link_:
+      type: object
+      title: Map«string,Link»
+      additionalProperties:
+        $ref: "#/components/schemas/Link"

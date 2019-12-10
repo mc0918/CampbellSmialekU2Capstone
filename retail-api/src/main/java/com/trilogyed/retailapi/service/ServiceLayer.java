@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @EnableCircuitBreaker
 @Service
@@ -57,18 +58,21 @@ public class ServiceLayer {
 
 
         //Subtract quantity ordered from product database
-//        for (InvoiceItem item : invoice.getInvoiceItems()) {
-//            for (Product product : model.getProducts()) {
-//                if (item.getInventory_id().equals(product.getproduct_id())) {
-//                    if (item.getQuantity() > product.getInventory() || item.getQuantity() < 1) {
-//                        throw new ProductOutOfStock("You tried to order " + item.getQuantity() + " but only " + product.getInventory() + " of " + product.getproduct_name() + " remain.");
-//                    } else {
-//                        product.setInventory(product.getInventory() - item.getQuantity());
-//                        productClient.updateProduct(product); //If there is no product in DB a 500 error will be thrown
-//                    }
-//                }
-//            }
-//        }
+        Map<InvoiceItem, Product> invoiceItemProductMap =new HashMap<>();
+        for(InvoiceItem item : invoice.getInvoiceItems()){
+            for(Product product : model.getProducts()){
+                if(item.getInventory_id().equals(product.getproduct_id())){
+                    product.setInventory(product.getInventory() - item.getQuantity());
+                    if(product.getInventory() < 0 || item.getQuantity() < 1){
+                        throw new ProductOutOfStock("You tried to order " + item.getQuantity() + " but only " + product.getInventory() + " of " + product.getproduct_name() + " remain.");
+                    }
+                    invoiceItemProductMap.put(item, product);
+                }
+            }
+        }
+        invoiceItemProductMap.forEach((item,product)-> {
+            productClient.updateProduct(product);
+        });
 
         //After all the logic is complete, save the invoice and return the viewmodel
 //        invoiceClient.saveInvoice(invoice);
@@ -209,13 +213,6 @@ public class ServiceLayer {
         model.setEmail(customer.getemail());
         model.setPhone(customer.getphone());
 
-        //PRODUCT
-//        List<Product> products = new ArrayList<>();
-//        invoiceItems.stream().forEach(invoiceItem -> {
-//            products.add(productClient.getProduct(invoiceItem.getInventory_id()));
-//        });
-//        model.setProducts(products);
-
         //LEVELUP
         model.setLevelUpId(levelUp.getLevelUpId());
         model.setPoints(levelUp.getPoints());
@@ -231,6 +228,13 @@ public class ServiceLayer {
             itemDoubleMap.put(invoiceItem.getInvoice_item_id(), invoiceItem.getQuantity());
         });
         model.setQuantity(itemDoubleMap);
+
+        //PRODUCT
+        List<Product> products = new ArrayList<>();
+        for(InvoiceItem item : model.getInvoiceItems()){
+            products.add(productClient.getProduct(item.getInventory_id()));
+        }
+        model.setProducts(products);
 
         return model;
     }

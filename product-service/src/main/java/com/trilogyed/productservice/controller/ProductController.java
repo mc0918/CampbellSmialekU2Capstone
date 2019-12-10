@@ -17,20 +17,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CacheConfig(cacheNames = {"products"})
+@CacheConfig(cacheNames = {"products"})
 public class ProductController {
 
     @Autowired
     private ProductServiceLayer service;
 
-//    @CachePut(key = "#result.getproduct_id()")
+    @CachePut(key = "#result.getproduct_id()")
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Product saveProduct(@RequestBody Product o) {
         return service.saveProduct(o);
     }
 
-//    @Cacheable
+    @Cacheable
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Product getProduct(@PathVariable int id) throws IllegalArgumentException {
@@ -60,7 +60,7 @@ public class ProductController {
         }
     }
 
-//    @CacheEvict
+    @CacheEvict
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteProduct(@PathVariable int id) throws IdNotFound {

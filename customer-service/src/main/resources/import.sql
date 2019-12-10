@@ -1,0 +1,1 @@
+insert into customer(customer_id, city, email, first_name, last_name, phone, street, zip) values (1, "North Southville", "jeffbezos@gmail.com", "Jeffy", "Bezosi", "1234567890", "S. North St.", "60611");

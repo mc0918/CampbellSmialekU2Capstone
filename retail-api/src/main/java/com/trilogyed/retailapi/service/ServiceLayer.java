@@ -177,15 +177,10 @@ public class ServiceLayer {
         }
     }
 
-    //    LEVEL UP
-//    @Autowired
-//    RestTemplate restTemplate;
-
     @HystrixCommand(fallbackMethod = "reliable")
     public LevelUp getLevelUpPointsByCustomerId(Integer id) {
         LevelUp levelUp = levelUpClient.findLevelUpByCustomerId(id);
         return levelUp;
-        //return levelUp.getPoints();
     }
 
     public LevelUp reliable(Integer id){
@@ -193,18 +188,13 @@ public class ServiceLayer {
         return null;
     }
 
-//    @Bean
-//    public RestTemplate restTemplate() {
-//        return new RestTemplate();
-//    }
-
     public RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp) {
         RetailViewModel model = new RetailViewModel();
         List<InvoiceItem> invoiceItems = invoice.getInvoiceItems();
         HashMap<Integer, Integer> itemDoubleMap = new HashMap<>();
 
         //CUSTOMER
-        model.setCustomer_id(customer.getcustomer_id()); //from customer model
+        model.setCustomer_id(customer.getcustomer_id());
         model.setFirst_name(customer.getfirst_name());
         model.setLast_name(customer.getlast_name());
         model.setStreet(customer.getstreet());
@@ -230,9 +220,12 @@ public class ServiceLayer {
         model.setQuantity(itemDoubleMap);
 
         //PRODUCT
+//        Product[] products = new Product[invoiceItems.size()];
         List<Product> products = new ArrayList<>();
-        for(InvoiceItem item : model.getInvoiceItems()){
-            products.add(productClient.getProduct(item.getInventory_id()));
+        for(InvoiceItem item : invoiceItems){
+            Product temp = productClient.getProduct(item.getInventory_id());
+            products.add(temp);
+//            products.add(productClient.getProduct(item.getInventory_id()));
         }
         model.setProducts(products);
 

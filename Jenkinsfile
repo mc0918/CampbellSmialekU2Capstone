@@ -6,11 +6,11 @@ pipeline {
         stage('build') {
             steps {
               bat '''
-                 cd config-server-template
+                 cd config-server
                  ./mvnw -DskipTests clean compile
-                 cd eureka-server-template
+                 cd eureka-server
                  ./mvnw -DskipTests clean compile
-                 cd config-service
+                 cd level-up-queue-consumer
                  ./mvnw -DskipTests clean compile
                  cd customer-service
                  ./mvnw -DskipTests clean compile
@@ -31,11 +31,11 @@ pipeline {
         stage('test') {
             steps {
               bat '''
-                 cd config-server-template
+                 cd config-server
                  ./mvnw test
-                 cd eureka-server-template
+                 cd eureka-server
                  ./mvnw test
-                 cd config-service
+                 cd level-up-queue-consumer
                  ./mvnw test
                  cd customer-service
                  ./mvnw test
@@ -56,11 +56,11 @@ pipeline {
         stage('deliver') {
             steps {
               bat '''
-                 cd config-server-template
+                 cd config-server
                  ./mvnw -DskipTests install
-                 cd eureka-server-template
+                 cd eureka-server
                  ./mvnw -DskipTests install
-                 cd config-service
+                 cd level-up-queue-consumer
                  ./mvnw -DskipTests install
                  cd customer-service
                  ./mvnw -DskipTests install

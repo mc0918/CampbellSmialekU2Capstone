@@ -86,3 +86,4 @@ insert into authorities(username, authority) values ("ADMIN", "TEAM_LEAD");
 insert into authorities(username, authority) values ("ADMIN", "MANAGER");
 insert into authorities(username, authority) values ("ADMIN", "ADMIN");
 
+insert into product(product_id, product_name, product_description, list_price, unit_cost, inventory) values(1, "name", "desc", 4.20, 3.50, 7);

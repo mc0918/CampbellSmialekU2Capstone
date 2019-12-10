@@ -2,13 +2,18 @@ package com.trilogyed.retailapi.controller;
 
 import com.trilogyed.retailapi.model.Invoice;
 import com.trilogyed.retailapi.model.InvoiceItem;
+import com.trilogyed.retailapi.model.LevelUp;
 import com.trilogyed.retailapi.model.Product;
 import com.trilogyed.retailapi.service.ServiceLayer;
+import com.trilogyed.retailapi.util.feign.LevelUpClient;
 import com.trilogyed.retailapi.viewmodel.RetailViewModel;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -17,14 +22,54 @@ import java.util.List;
 public class RetailController {
 
     @Autowired
+    private DiscoveryClient discoveryClient;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private LevelUpClient levelUpClient;
+
+    @Autowired
     private ServiceLayer serviceLayer;
+
+    public RetailController(){}
+
+    public RetailController(LevelUpClient client){
+        this.levelUpClient = client;
+    }
+
+    public RetailController(LevelUpClient client, RabbitTemplate rabbitTemplate) {
+        this.levelUpClient = client;
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
+    private RestTemplate restTemplate;
+    public static final String EXCHANGE = "level-up-exchange";
+    public static final String ROUTING_KEY = "level-up.add.levelUp.controller";
+
+
 
     // Retail Endpoints
 
     @RequestMapping(value = "/invoices", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public RetailViewModel submitInvoice(@RequestBody Invoice invoice) {
-        return serviceLayer.saveInvoice(invoice);
+        RetailViewModel viewModel = serviceLayer.saveInvoice(invoice);
+
+        LevelUp levelUp = new LevelUp();
+        levelUp.setLevelUpId(viewModel.getLevelUpId());
+        levelUp.setCustomerId(viewModel.getCustomer_id());
+        levelUp.setMemberDate(viewModel.getMemberDate());
+        levelUp.setPoints(viewModel.getPoints());
+
+        System.out.println("Sending note: " + levelUp.toString());
+
+        rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
+
+        System.out.println("level up sent :)");
+
+        return viewModel;
     }
 
     @RequestMapping(value = "/invoices/{id}", method = RequestMethod.GET)

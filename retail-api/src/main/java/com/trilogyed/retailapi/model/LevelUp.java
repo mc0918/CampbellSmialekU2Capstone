@@ -7,10 +7,11 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class LevelUp {
+public class LevelUp implements Serializable {
     private Integer levelUpId;
 
     @NotNull

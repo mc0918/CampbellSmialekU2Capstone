@@ -4,10 +4,13 @@ import com.trilogyed.levelupservice.exceptions.IdAlreadyExists;
 import com.trilogyed.levelupservice.exceptions.IdNotFound;
 import com.trilogyed.levelupservice.model.LevelUp;
 import com.trilogyed.levelupservice.repository.LevelUpRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,7 +20,20 @@ import java.util.List;
 public class LevelUpController {
 
     @Autowired
+    private DiscoveryClient discoveryClient;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
     private LevelUpRepository levelUpRepository;
+
+    public LevelUpController(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
+
+    private RestTemplate restTemplate = new RestTemplate();
+
 
     @PostMapping(value = "/levelUp")
     @ResponseStatus(HttpStatus.CREATED)

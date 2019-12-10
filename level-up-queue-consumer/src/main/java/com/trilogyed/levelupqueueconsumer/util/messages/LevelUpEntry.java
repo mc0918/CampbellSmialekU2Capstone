@@ -8,10 +8,11 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.sun.istack.internal.NotNull;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class LevelUpEntry {
+public class LevelUpEntry implements Serializable {
     private Integer levelUpId;
 
     @NotNull

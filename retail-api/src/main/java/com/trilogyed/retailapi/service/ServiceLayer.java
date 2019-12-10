@@ -177,15 +177,17 @@ public class ServiceLayer {
 //    @Autowired
 //    RestTemplate restTemplate;
 
-//    @HystrixCommand(fallbackMethod = "reliable")
-    public Integer getLevelUpPointsByCustomerId(int id) {
+    @HystrixCommand(fallbackMethod = "reliable")
+    public LevelUp getLevelUpPointsByCustomerId(Integer id) {
         LevelUp levelUp = levelUpClient.findLevelUpByCustomerId(id);
-        return levelUp.getPoints();
+        return levelUp;
+        //return levelUp.getPoints();
     }
 
-//    public String reliable(){
-//        return "ooh spooooky circuit breaker ooooh";
-//    }
+    public LevelUp reliable(Integer id){
+        System.out.println("ooh spooooky circuit breaker ooooh");
+        return null;
+    }
 
 //    @Bean
 //    public RestTemplate restTemplate() {

@@ -72,7 +72,7 @@ public class LevelUpController {
 
     @GetMapping(value = "/levelUp/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public LevelUp findLevelUpByCustomerId(@PathVariable int id) throws IdNotFound {
+    public LevelUp findLevelUpByCustomerId(@PathVariable Integer id) throws IdNotFound {
         try {
             return levelUpRepository.findByCustomerId(id);
         } catch (IllegalArgumentException e) {

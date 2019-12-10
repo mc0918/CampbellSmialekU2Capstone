@@ -109,7 +109,7 @@ public class RetailController {
 
     @RequestMapping(value = "/levelup/customer/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Integer getLevelUpPointsByCustomerId(int id) {
+    public LevelUp getLevelUpPointsByCustomerId(Integer id) {
         return serviceLayer.getLevelUpPointsByCustomerId(id);
     }
 

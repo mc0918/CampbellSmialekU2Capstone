@@ -70,8 +70,8 @@ public class ServiceLayer {
                 }
             }
         }
-        invoiceItemProductMap.forEach((k,v)-> {
-            productClient.updateProduct(v);
+        invoiceItemProductMap.forEach((item,product)-> {
+            productClient.updateProduct(product);
         });
 
         //After all the logic is complete, save the invoice and return the viewmodel

@@ -1,5 +1,6 @@
 package com.trilogyed.retailapi.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.trilogyed.retailapi.model.Invoice;
 import com.trilogyed.retailapi.model.InvoiceItem;
 import com.trilogyed.retailapi.model.LevelUp;
@@ -9,14 +10,18 @@ import com.trilogyed.retailapi.util.feign.LevelUpClient;
 import com.trilogyed.retailapi.viewmodel.RetailViewModel;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+@EnableCircuitBreaker
 @RestController
 @RefreshScope
 public class RetailController {

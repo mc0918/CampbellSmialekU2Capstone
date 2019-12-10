@@ -1,5 +1,6 @@
 package com.trilogyed.retailapi.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.trilogyed.retailapi.exception.IdNotFound;
 import com.trilogyed.retailapi.exception.ProductOutOfStock;
 import com.trilogyed.retailapi.model.*;
@@ -9,14 +10,16 @@ import com.trilogyed.retailapi.util.feign.LevelUpClient;
 import com.trilogyed.retailapi.util.feign.ProductClient;
 import com.trilogyed.retailapi.viewmodel.RetailViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@EnableCircuitBreaker
 @Service
 public class ServiceLayer {
     private CustomerClient customerClient;
@@ -51,7 +54,6 @@ public class ServiceLayer {
         int pointsToAdd = model.getPoints();
         pointsToAdd += (int) ((totalCost / 50) * 10);
         model.setPoints(pointsToAdd);
-        //Todo: Submit points to level-up-service through queue
 
 
         //Subtract quantity ordered from product database
@@ -172,10 +174,23 @@ public class ServiceLayer {
     }
 
     //    LEVEL UP
+//    @Autowired
+//    RestTemplate restTemplate;
+
+//    @HystrixCommand(fallbackMethod = "reliable")
     public Integer getLevelUpPointsByCustomerId(int id) {
         LevelUp levelUp = levelUpClient.findLevelUpByCustomerId(id);
         return levelUp.getPoints();
     }
+
+//    public String reliable(){
+//        return "ooh spooooky circuit breaker ooooh";
+//    }
+
+//    @Bean
+//    public RestTemplate restTemplate() {
+//        return new RestTemplate();
+//    }
 
     public RetailViewModel buildRetailViewModel(Invoice invoice, Customer customer, LevelUp levelUp) {
         RetailViewModel model = new RetailViewModel();

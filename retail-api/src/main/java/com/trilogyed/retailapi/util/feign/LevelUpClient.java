@@ -1,5 +1,6 @@
 package com.trilogyed.retailapi.util.feign;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.trilogyed.retailapi.exception.IdNotFound;
 import com.trilogyed.retailapi.model.LevelUp;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -25,7 +26,11 @@ public interface LevelUpClient {
     @RequestMapping(value = "/levelUp/{id}", method = RequestMethod.DELETE)
     public String deleteLevelUp(@PathVariable int id) throws IdNotFound;
 
+//    @HystrixCommand(fallbackMethod = "reliable")
     @GetMapping(value = "/levelUp/customer/{id}")
     public LevelUp findLevelUpByCustomerId(@PathVariable int id) throws IdNotFound;
 
+//    default String reliable(){
+//        return "ooh spooooky circuit breaker ooooh";
+//    }
 }

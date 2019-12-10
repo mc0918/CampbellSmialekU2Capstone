@@ -10,9 +10,6 @@ import com.trilogyed.retailapi.util.feign.ProductClient;
 import com.trilogyed.retailapi.viewmodel.RetailViewModel;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

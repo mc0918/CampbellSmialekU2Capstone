@@ -47,8 +47,8 @@ public class ProductController {
         return service.getAllProducts();
     }
 
-//    @CacheEvict(key = "#o.product_id()")
-    //@CacheEvict(value = "products", key = "#product_id")
+
+    @CacheEvict(key = "#o.getproduct_id()")
     @RequestMapping(value = "/products", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public String updateProduct(@RequestBody Product o) throws IdNotFound {
@@ -73,6 +73,7 @@ public class ProductController {
         }
     }
 
+    @CacheEvict(key = "#id")
     @RequestMapping(value = "/products/inventory", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public String updateInventory(@RequestParam(required = true) int id, @RequestParam int inventory) throws IdNotFound {

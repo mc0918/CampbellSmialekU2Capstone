@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-@Entity(name = "Invoice") //just in case we have some other "Invoice" entity in the future, this defines the name
+@Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "invoice")
 @Proxy(lazy=false)

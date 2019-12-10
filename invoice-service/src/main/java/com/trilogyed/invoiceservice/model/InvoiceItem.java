@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-@Entity(name = "InvoiceItem")
+@Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "invoice_item")
 @Proxy(lazy=false)

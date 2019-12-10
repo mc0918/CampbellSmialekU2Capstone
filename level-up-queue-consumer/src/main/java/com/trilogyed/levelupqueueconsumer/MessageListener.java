@@ -22,7 +22,7 @@ public class MessageListener {
 
         try {
             levelUpClient.submitLevelUp(msg);
-            System.out.println("level up updated!");
+            System.out.println("level up saved!");
         } catch (Exception e) {
             try {
                 levelUpClient.updateLevelUp(msg);

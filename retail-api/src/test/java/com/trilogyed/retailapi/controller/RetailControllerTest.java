@@ -25,8 +25,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RetailControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    private MockMvc mvc;
 
     @MockBean
     private ServiceLayer service;
@@ -99,7 +98,7 @@ public class RetailControllerTest {
         String outputJson = mapper.writeValueAsString(viewModel);
         String inputJson = mapper.writeValueAsString(Invoice_NO_ID);
 
-        mockMvc.perform(post("/invoices")
+        mvc.perform(post("/invoices")
                 .content(inputJson)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -110,43 +109,112 @@ public class RetailControllerTest {
     }
 
     @Test
-    public void getInvoiceById() {
+    public void getInvoice() throws Exception {
+        String output_json = mapper.writeValueAsString(Invoice_ID);
+
+        mvc.perform(get("/invoices/{id}", 1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(output_json));
     }
 
     @Test
-    public void getAllInvoices() {
+    public void getAllInvoices() throws Exception {
+        String output_json = mapper.writeValueAsString(Invoice_LIST);
+
+        mvc.perform(get("/invoices"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(output_json));
     }
 
     @Test
-    public void getInvoicesByCustomerId() {
+    public void getInvoicesByCustomerId() throws Exception{
+        String output_json = mapper.writeValueAsString(Invoice_LIST);
+
+        mvc.perform(get("/invoices/customer/{id}", 1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(output_json));
+
     }
 
     @Test
-    public void getProductById() {
+    public void getProduct() throws Exception {
+        String output_json = mapper.writeValueAsString(Product_ID);
+
+        mvc.perform(get("/products/{id}", 1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(output_json));
     }
 
     @Test
-    public void getProductByInvoiceId() {
+    public void getProductByInvoiceId() throws Exception{
+        String outputJson = mapper.writeValueAsString(Product_LIST);
+
+        mvc.perform(get("/products/invoice/{id}"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(outputJson));
     }
 
     @Test
-    public void getLevelUpPointsByCustomerId() {
+    public void getLevelUpPointsByCustomerId() throws Exception {
+        String outputJson = mapper.writeValueAsString(LevelUp_ID);
+
+        mvc.perform(get("/levelup/customer/{id}"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(outputJson));
     }
 
     @Test
-    public void createProduct() {
+    public void saveProduct() throws Exception {
+        String input_json = mapper.writeValueAsString(Product_NO_ID);
+        String output_json = mapper.writeValueAsString(Product_ID);
+
+        mvc.perform(post("/products")
+                .content(input_json)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(content().json(output_json));
     }
 
     @Test
-    public void getAllProducts() {
+    public void getAllProducts() throws Exception {
+        String outputJson = mapper.writeValueAsString(Product_LIST);
+
+        mvc.perform(get("/products/"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(outputJson));
     }
 
     @Test
-    public void updateProduct() {
+    public void updateProduct() throws Exception {
+        String input_json = mapper.writeValueAsString(Product_UPDATED);
+
+        mvc.perform(put("/products")
+                .content(input_json)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        //for things with random or json parsing errors
+        //.andExpect(jsonPath("$.id").value("" + REAL_LOCATION.getId()))
+        //.andExpect(jsonPath("$.description").value(REAL_LOCATION.getDescription()))
+        //.andExpect(jsonPath("$.location").value(REAL_LOCATION.getLocation()));
     }
 
     @Test
-    public void deleteProduct() {
+    public void deleteProduct() throws Exception {
+        mvc.perform(delete("/products/{id}", 1))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
     private static RetailViewModel generateViewModel(){
